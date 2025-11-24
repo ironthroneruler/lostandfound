@@ -18,7 +18,7 @@ def register_student(request):
         student_id = request.POST.get('student_id')
         grade = request.POST.get('grade')
 
-        #Create user
+        #Creates user, .create_user() method hashes password
         user = CustomUser.objects.create_user(
             username=username,
             email=email,

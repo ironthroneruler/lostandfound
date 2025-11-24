@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - School Lost & Found{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="text-center my-5">
+    <h1 class="display-4" style="color: var(--primary-color);">
+        <i class="fas fa-search"></i> School Lost & Found
+    </h1>
+    <p class="lead text-muted">Reunite students with their belongings</p>
+    
+    {% if not user.is_authenticated %}
+        <div class="mt-4" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="{% url 'register_student' %}" class="btn btn-primary btn-lg">
+                <i class="fas fa-user-graduate"></i> Register as Student
+            </a>
+            <a href="{% url 'register_teacher' %}" class="btn btn-success btn-lg">
+                <i class="fas fa-chalkboard-teacher"></i> Register as Teacher
+            </a>
+        </div>
+        <div class="mt-3">
+            <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+        </div>
+    {% else %}
+        <div class="card mt-4" style="max-width: 600px; margin: 0 auto;">
+            <div class="card-body" style="background-color: #dcfce7;">
+                <h3>Welcome back, {{ user.first_name }}!</h3>
+                <p>You are logged in as a <strong>{{ user.get_user_type_display }}</strong></p>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Features Section -->
+<div class="mb-5">
+    <h2 class="text-center mb-4">How It Works</h2>
+    <div class="row gap-4">
+        <!-- Feature 1 -->
+        <div class="col-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <div style="font-size: 4rem; color: var(--primary-color); margin-bottom: 1rem;">
+                        <i class="fas fa-box-open"></i>
+                    </div>
+                    <h3>Report Found Items</h3>
+                    <p class="text-muted">Teachers can easily report items they find with photos and details.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="col-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <div style="font-size: 4rem; color: var(--success-color); margin-bottom: 1rem;">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Search & Browse</h3>
+                    <p class="text-muted">Students can search through found items to locate their belongings.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="col-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <div style="font-size: 4rem; color: var(--warning-color); margin-bottom: 1rem;">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <h3>Claim Items</h3>
+                    <p class="text-muted">Submit claims for your items and get them back quickly and securely.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Stats -->
+<div class="card bg-light">
+    <div class="card-body">
+        <div class="row text-center">
+            <div class="col-4">
+                <h3 style="color: var(--primary-color);">
+                    <i class="fas fa-box"></i> Items Found
+                </h3>
+                <p class="lead">Coming Soon</p>
+            </div>
+            <div class="col-4">
+                <h3 style="color: var(--success-color);">
+                    <i class="fas fa-check-circle"></i> Items Returned
+                </h3>
+                <p class="lead">Coming Soon</p>
+            </div>
+            <div class="col-4">
+                <h3 style="color: #3b82f6;">
+                    <i class="fas fa-users"></i> Users
+                </h3>
+                <p class="lead">Coming Soon</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
