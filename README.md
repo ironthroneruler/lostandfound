@@ -4,9 +4,7 @@
 A Django web application to help students and staff report found items, search for lost belongings, and manage the claim process efficiently.
 
 ## Team Members
-- Developer 1: [Name] - Backend Lead
-- Developer 2: [Name] - Frontend Lead
-- Developer 3: [Name] - Integration & Testing
+- Harshit, Aaryan, Himaghna
 
 ## Setup Instructions
 
