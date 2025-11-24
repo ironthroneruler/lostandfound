@@ -43,7 +43,6 @@
 
 **Skills Needed:**
 - HTML/CSS
-- Bootstrap framework
 - UI/UX principles
 - Responsive design
 - Basic JavaScript
@@ -64,7 +63,7 @@
 - Environment configuration
 
 **Skills Needed:**
-- Full stack knowledge
+- Full-stack knowledge
 - Testing methodologies
 - DevOps basics
 - Problem solving
@@ -111,10 +110,9 @@
 - [x] Login/logout views
 
 #### Developer 2:
-- [ ] Bootstrap setup
-- [ ] Base template with nav
-- [ ] Registration page
-- [ ] Login page
+- [x] Base template with nav
+- [x] Registration page
+- [x] Login page
 
 #### Developer 3:
 - [ ] Git setup
