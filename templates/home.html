@@ -4,47 +4,47 @@
 
 {% block content %}
 <!-- Hero Section -->
-<div class="text-center my-5">
-    <h1 class="display-4" style="color: var(--primary-color);">
+<div class="text-center" style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+    <h1 style="color: var(--primary-color); font-size: 2.5rem; font-weight: bold; margin-bottom: 0.5rem;">
         <i class="fas fa-search"></i> School Lost & Found
     </h1>
-    <p class="lead text-muted">Reunite students with their belongings</p>
-    
+    <p style="font-size: 1.25rem; color: var(--text-muted); margin-bottom: 1rem;">Reunite students with their belongings</p>
+
     {% if not user.is_authenticated %}
-        <div class="mt-4" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-            <a href="{% url 'register_student' %}" class="btn btn-primary btn-lg">
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
+            <a href="{% url 'register_student' %}" class="btn btn-primary" style="font-size: 1rem; padding: 0.75rem 1.75rem;">
                 <i class="fas fa-user-graduate"></i> Register as Student
             </a>
-            <a href="{% url 'register_teacher' %}" class="btn btn-success btn-lg">
+            <a href="{% url 'register_teacher' %}" class="btn btn-success" style="font-size: 1rem; padding: 0.75rem 1.75rem;">
                 <i class="fas fa-chalkboard-teacher"></i> Register as Teacher
             </a>
         </div>
-        <div class="mt-3">
-            <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+        <div style="margin-top: 0.75rem;">
+            <p style="font-size: 0.95rem; margin-bottom: 0;">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
         </div>
     {% else %}
-        <div class="card mt-4" style="max-width: 600px; margin: 0 auto;">
-            <div class="card-body" style="background-color: #dcfce7;">
-                <h3>Welcome back, {{ user.first_name }}!</h3>
-                <p>You are logged in as a <strong>{{ user.get_user_type_display }}</strong></p>
+        <div class="card" style="max-width: 600px; margin: 1rem auto 0;">
+            <div class="card-body" style="background-color: #dcfce7; padding: 1rem;">
+                <h5 style="margin-bottom: 0.5rem; font-size: 1.2rem;">Welcome back, {{ user.first_name }}!</h5>
+                <p style="margin-bottom: 0; font-size: 1rem;">You are logged in as a <strong>{{ user.get_user_type_display }}</strong></p>
             </div>
         </div>
     {% endif %}
 </div>
 
 <!-- Features Section -->
-<div class="mb-5">
-    <h2 class="text-center mb-4">How It Works</h2>
-    <div class="row gap-4">
+<div style="margin-bottom: 1.5rem;">
+    <h2 class="text-center" style="font-size: 1.75rem; margin-bottom: 1rem; font-weight: 600;">How It Works</h2>
+    <div class="row">
         <!-- Feature 1 -->
         <div class="col-4">
             <div class="card text-center">
-                <div class="card-body">
-                    <div style="font-size: 4rem; color: var(--primary-color); margin-bottom: 1rem;">
+                <div class="card-body" style="padding: 1.25rem 1rem;">
+                    <div style="font-size: 3rem; color: var(--primary-color); margin-bottom: 0.75rem;">
                         <i class="fas fa-box-open"></i>
                     </div>
-                    <h3>Report Found Items</h3>
-                    <p class="text-muted">Teachers can easily report items they find with photos and details.</p>
+                    <h4 style="font-size: 1.15rem; margin-bottom: 0.5rem; font-weight: 600;">Report Items</h4>
+                    <p class="text-muted" style="margin-bottom: 0; font-size: 0.95rem; line-height: 1.5;">Teachers report found items with photos and details.</p>
                 </div>
             </div>
         </div>
@@ -52,12 +52,12 @@
         <!-- Feature 2 -->
         <div class="col-4">
             <div class="card text-center">
-                <div class="card-body">
-                    <div style="font-size: 4rem; color: var(--success-color); margin-bottom: 1rem;">
+                <div class="card-body" style="padding: 1.25rem 1rem;">
+                    <div style="font-size: 3rem; color: var(--success-color); margin-bottom: 0.75rem;">
                         <i class="fas fa-search"></i>
                     </div>
-                    <h3>Search & Browse</h3>
-                    <p class="text-muted">Students can search through found items to locate their belongings.</p>
+                    <h4 style="font-size: 1.15rem; margin-bottom: 0.5rem; font-weight: 600;">Search & Browse</h4>
+                    <p class="text-muted" style="margin-bottom: 0; font-size: 0.95rem; line-height: 1.5;">Students search to locate their belongings.</p>
                 </div>
             </div>
         </div>
@@ -65,12 +65,12 @@
         <!-- Feature 3 -->
         <div class="col-4">
             <div class="card text-center">
-                <div class="card-body">
-                    <div style="font-size: 4rem; color: var(--warning-color); margin-bottom: 1rem;">
+                <div class="card-body" style="padding: 1.25rem 1rem;">
+                    <div style="font-size: 3rem; color: var(--warning-color); margin-bottom: 0.75rem;">
                         <i class="fas fa-clipboard-check"></i>
                     </div>
-                    <h3>Claim Items</h3>
-                    <p class="text-muted">Submit claims for your items and get them back quickly and securely.</p>
+                    <h4 style="font-size: 1.15rem; margin-bottom: 0.5rem; font-weight: 600;">Claim Items</h4>
+                    <p class="text-muted" style="margin-bottom: 0; font-size: 0.95rem; line-height: 1.5;">Submit claims and get items back quickly.</p>
                 </div>
             </div>
         </div>
@@ -79,26 +79,116 @@
 
 <!-- Quick Stats -->
 <div class="card bg-light">
-    <div class="card-body">
-        <div class="row text-center">
-            <div class="col-4">
-                <h3 style="color: var(--primary-color);">
-                    <i class="fas fa-box"></i> Items Found
-                </h3>
-                <p class="lead">Coming Soon</p>
+    <div class="card-body" style="padding: 1.5rem 2.5rem;">
+        <div class="row" style="justify-content: space-around;">
+            <div class="col-4" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 0.5rem;">
+                    <i class="fas fa-box"></i>
+                </div>
+                <h5 style="color: var(--text-dark); font-size: 1.3rem; margin-bottom: 0; font-weight: 600;">Items Found</h5>
             </div>
-            <div class="col-4">
-                <h3 style="color: var(--success-color);">
-                    <i class="fas fa-check-circle"></i> Items Returned
-                </h3>
-                <p class="lead">Coming Soon</p>
+            <div class="col-4" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div style="font-size: 2.5rem; color: var(--success-color); margin-bottom: 0.5rem;">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h5 style="color: var(--text-dark); font-size: 1.3rem; margin-bottom: 0; font-weight: 600;">Items Returned</h5>
             </div>
-            <div class="col-4">
-                <h3 style="color: #3b82f6;">
-                    <i class="fas fa-users"></i> Users
-                </h3>
-                <p class="lead">Coming Soon</p>
+            <div class="col-4" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div style="font-size: 2.5rem; color: #3b82f6; margin-bottom: 0.5rem;">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h5 style="color: var(--text-dark); font-size: 1.3rem; margin-bottom: 0; font-weight: 600;">Users</h5>
             </div>
+        </div>
+        <div class="text-center" style="margin-top: 1rem;">
+            <p style="font-size: 1.1rem; margin-bottom: 0; color: var(--text-muted); font-style: italic;">Coming Soon</p>
+        </div>
+    </div>
+</div>
+
+<!-- Reviews Marquee -->
+<div class="reviews-marquee" style="margin-top: 1.5rem; padding: 1rem 0;">
+    <div class="marquee-content">
+        <div class="marquee-item">
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <span>"Found my backpack in just 2 days! This system is amazing!" - Student A</span>
+        </div>
+        <div class="marquee-item">
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <span>"So easy to report found items. Great for teachers!" - Teacher A</span>
+        </div>
+        <div class="marquee-item">
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <span>"Got my calculator back before my test. Thank you!" - Student B</span>
+        </div>
+        <div class="marquee-item">
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <span>"Finally, a simple way to reunite students with their belongings!" - Teacher B</span>
+        </div>
+        <div class="marquee-item">
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <span>"Love how organized and efficient this system is!" - Student C</span>
+        </div>
+        <!-- Duplicate reviews for seamless loop -->
+        <div class="marquee-item">
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <span>"Found my backpack in just 2 days! This system is amazing!" - Student A</span>
+        </div>
+        <div class="marquee-item">
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <span>"So easy to report found items. Great for teachers!" - Teacher A</span>
+        </div>
+        <div class="marquee-item">
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <span>"Got my calculator back before my test. Thank you!" - Student B</span>
+        </div>
+        <div class="marquee-item">
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <span>"Finally, a simple way to reunite students with their belongings!" - Teacher B</span>
+        </div>
+        <div class="marquee-item">
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <i class="fas fa-star" style="color: #f59e0b;"></i>
+            <span>"Love how organized and efficient this system is!" - Student C</span>
         </div>
     </div>
 </div>
