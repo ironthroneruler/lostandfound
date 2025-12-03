@@ -160,15 +160,107 @@
     margin-bottom: 1.5rem;
 }
 
+.search-container {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    margin-bottom: 1.5rem;
+}
+
 .search-form {
+    width: 100%;
+}
+
+.search-row {
     display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
+    gap: 0;
+    align-items: stretch;
+    width: 100%;
 }
 
 .search-input-group {
+    position: relative;
+    flex: 2;
+    min-width: 300px;
+}
+
+.search-input-group .search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.search-input-group .search-input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px 0 0 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.search-input-group .search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.category-filter-group {
+    position: relative;
     flex: 1;
-    min-width: 250px;
+    min-width: 200px;
+}
+
+.category-filter-group .filter-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.category-filter-group .category-select {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 2px solid var(--border-color);
+    border-left: 2px solid var(--border-color);
+    border-right: none;
+    border-radius: 0;
+    font-size: 1rem;
+    background-color: white;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+}
+
+.category-filter-group .category-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.search-btn {
+    border-radius: 0;
+    border: 2px solid var(--primary-color);
+    border-left: none;
+    min-width: 120px;
+    white-space: nowrap;
+}
+
+.clear-btn {
+    border-radius: 0 8px 8px 0;
+    border: 2px solid var(--border-color);
+    border-left: none;
+    min-width: 100px;
+    white-space: nowrap;
 }
 
 .results-summary {

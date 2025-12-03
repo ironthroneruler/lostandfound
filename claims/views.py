@@ -45,7 +45,7 @@ def my_claims(request):
 #Admin view to see all claims
 @login_required
 def admin_claims(request):
-    if not request.user.is_staff:
+    if not (request.user.is_staff or request.user.user_type == 'teacher'):
         messages.error(request, 'You do not have permission to access this page.')
         return redirect('home')
     
@@ -61,7 +61,7 @@ def admin_claims(request):
 #Admin view to review claim detail
 @login_required
 def review_claim(request, claim_pk):
-    if not request.user.is_staff:
+    if not (request.user.is_staff or request.user.user_type == 'teacher'):
         messages.error(request, 'You do not have permission to access this page.')
         return redirect('home')
 

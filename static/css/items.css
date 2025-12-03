@@ -1,5 +1,31 @@
 /* Items grid and cards */
 
+.items-grid-container {
+    max-height: 800px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    scroll-behavior: smooth;
+}
+
+/* Custom scrollbar styling */
+.items-grid-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.items-grid-container::-webkit-scrollbar-track {
+    background: var(--light-bg);
+    border-radius: 4px;
+}
+
+.items-grid-container::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+.items-grid-container::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
 .items-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -12,14 +38,8 @@
     border-radius: 8px;
     box-shadow: var(--shadow);
     overflow: hidden;
-    transition: transform 0.3s, box-shadow 0.3s;
     display: flex;
     flex-direction: column;
-}
-
-.item-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
 }
 
 .item-card-image {
@@ -113,8 +133,12 @@
 
 .item-detail-container {
     max-width: 1000px;
-    margin: 1rem auto;
-    padding: 0 1rem;
+    margin: 2rem auto;
+    padding: 2rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 200px);
 }
 
 .item-detail-grid {

@@ -4,6 +4,43 @@ function toggleMenu() {
     menu.classList.toggle('active');
 }
 
+// Dropdown toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const dropdowns = document.querySelectorAll('.dropdown');
+
+    dropdowns.forEach(function(dropdown) {
+        const toggle = dropdown.querySelector('.dropdown-toggle');
+        const menu = dropdown.querySelector('.dropdown-menu');
+
+        if (toggle && menu) {
+            // Toggle dropdown on click
+            toggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Close all other dropdowns
+                dropdowns.forEach(function(otherDropdown) {
+                    if (otherDropdown !== dropdown) {
+                        otherDropdown.classList.remove('active');
+                    }
+                });
+
+                // Toggle current dropdown
+                dropdown.classList.toggle('active');
+            });
+        }
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.dropdown')) {
+            dropdowns.forEach(function(dropdown) {
+                dropdown.classList.remove('active');
+            });
+        }
+    });
+});
+
 // Alerts displaying success, warning messages
 document.addEventListener('DOMContentLoaded', function() {
     const alerts = document.querySelectorAll('.alert');

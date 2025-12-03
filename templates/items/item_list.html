@@ -73,9 +73,10 @@
 
 <!-- Items Grid -->
 {% if items %}
-    <div class="items-grid">
-        {% for item in items %}
-        <div class="item-card">
+    <div class="items-grid-container">
+        <div class="items-grid">
+            {% for item in items %}
+            <div class="item-card">
             <!-- Item Image -->
             <div class="item-card-image">
                 {% if item.photo %}
@@ -120,6 +121,7 @@
             </div>
         </div>
         {% endfor %}
+        </div>
     </div>
 {% else %}
     <!-- Empty State -->

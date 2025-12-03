@@ -44,6 +44,10 @@
     }
 
     /* Items Grid */
+    .items-grid-container {
+        max-height: 700px;
+    }
+
     .items-grid {
         grid-template-columns: 1fr;
     }
@@ -75,12 +79,39 @@
     }
 
     /* Search */
-    .search-form {
+    .search-row {
         flex-direction: column;
+        gap: 0.5rem;
     }
 
     .search-input-group {
         min-width: 100%;
+    }
+
+    .search-input-group .search-input {
+        border-radius: 8px;
+        border: 2px solid var(--border-color);
+    }
+
+    .category-filter-group {
+        min-width: 100%;
+    }
+
+    .category-filter-group .category-select {
+        border-radius: 8px;
+        border: 2px solid var(--border-color);
+    }
+
+    .search-btn {
+        border-radius: 8px;
+        border: 2px solid var(--primary-color);
+        width: 100%;
+    }
+
+    .clear-btn {
+        border-radius: 8px;
+        border: 2px solid var(--border-color);
+        width: 100%;
     }
 
     /* Claims Filter Tabs */

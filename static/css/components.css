@@ -56,12 +56,6 @@
     box-shadow: var(--shadow);
     overflow: hidden;
     margin-bottom: 0.4rem;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
 }
 
 /* Feature cards on home page - no transform on hover to prevent layout shift */
@@ -184,7 +178,7 @@
     margin-top: 2rem;
 }
 
-.empty-state i {
+.empty-state > i {
     font-size: 4rem;
     color: var(--text-muted);
     margin-bottom: 1rem;
@@ -199,4 +193,8 @@
 .empty-state p {
     color: var(--text-muted);
     margin-bottom: 1.5rem;
+}
+
+.empty-state .btn i {
+    font-size: 1rem;
 }

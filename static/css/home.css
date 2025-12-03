@@ -299,7 +299,7 @@
     padding: 2rem;
 }
 
-.recent-items-empty i {
+.recent-items-empty > i {
     font-size: 3rem;
     color: var(--text-muted);
     margin-bottom: 1rem;
@@ -313,6 +313,11 @@
 .recent-items-empty p {
     color: var(--text-muted);
     margin-bottom: 1rem;
+}
+
+.recent-items-empty .btn i {
+    font-size: 1rem;
+    color: white;
 }
 
 /* Reviews Marquee */

@@ -72,7 +72,17 @@
 }
 
 .dropdown-toggle {
+    color: var(--text-dark);
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    transition: all 0.3s;
+    font-size: 0.9rem;
     cursor: pointer;
+    display: inline-block;
+}
+
+.dropdown-toggle:hover {
+    color: var(--primary-color);
 }
 
 .dropdown-menu {
@@ -90,7 +100,8 @@
     z-index: 1000;
 }
 
-.dropdown:hover .dropdown-menu {
+.dropdown:hover .dropdown-menu,
+.dropdown.active .dropdown-menu {
     display: block;
 }
 
