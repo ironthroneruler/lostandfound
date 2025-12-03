@@ -1,0 +1,280 @@
+# Lost and Found App - Presentation Notes
+
+---
+
+## PAGE 1: FEATURES & FUNCTIONALITY
+
+### Core Features
+
+**User Management System**
+- Three user roles: Students, Teachers, and Administrators
+- Custom user authentication with role-based access control
+- Student profiles with student ID and grade level (9-12)
+- Teacher profiles with department information
+- Secure login and registration system
+
+**Item Management**
+- Report lost items with detailed information:
+  - Item name, category, and description
+  - Location where item was found
+  - Date found
+  - Photo upload capability
+  - Item status tracking (Available, Claimed, Returned)
+- Seven item categories:
+  - Electronics
+  - Clothing
+  - Books & Supplies
+  - Jewelry & Accessories
+  - Keys & ID Cards
+  - Bags & Backpacks
+  - Other
+- Search and filter functionality by name, description, or category
+- Edit and delete capabilities for item owners and staff
+- Chronological listing (newest items first)
+
+**Claims Processing System**
+- Two claim types:
+  - Formal claim to retrieve item
+  - Inquiry only (for questions)
+- Ownership verification through:
+  - Detailed item descriptions
+  - Identifying details
+  - Additional proof submission
+  - Preferred contact method
+- Four claim statuses:
+  - Pending Review
+  - Approved
+  - Rejected
+  - Item Returned
+- Prevents duplicate claims from same user
+- Automated status updates when claims are processed
+
+**Administrative Tools**
+- Centralized claim review dashboard
+- Filter claims by status (Pending, Approved, Rejected, Completed, All)
+- Claim approval/rejection workflow
+- Admin notes for internal documentation
+- Item return confirmation tracking
+- Timestamp tracking for all reviews
+- Staff-only access controls
+
+**User Experience**
+- My Items dashboard - view all submitted items
+- My Claims dashboard - track claim status
+- Real-time success/error notifications
+- User-friendly forms with validation
+- Responsive interface
+- Permission-based access controls
+
+---
+
+## PAGE 2: TECHNOLOGY STACK
+
+### Backend Framework
+**Django 5.2.8**
+- Python-based web framework
+- Built-in authentication and authorization
+- ORM (Object-Relational Mapping) for database operations
+- Form validation and processing
+- Security features (CSRF protection, XSS prevention)
+- Session management
+- Template rendering engine
+
+### Database
+**SQLite3**
+- Lightweight, file-based relational database
+- Zero configuration required
+- Perfect for development and moderate-scale deployments
+- ACID compliant
+- Supports complex queries and relationships
+
+### Key Python Libraries
+**Pillow 12.0.0**
+- Image processing library
+- Handles photo uploads for lost items
+- Image validation and optimization
+
+**psycopg2-binary 2.9.11**
+- PostgreSQL adapter (for production scalability)
+- Enables easy migration to PostgreSQL when needed
+
+**python-decouple 3.8**
+- Environment variable management
+- Separates configuration from code
+- Enhanced security for sensitive data
+
+**Additional Dependencies**
+- asgiref 3.11.0 - ASGI compatibility
+- sqlparse 0.5.3 - SQL formatting
+- tzdata 2025.2 - Timezone database
+
+### Frontend Technologies
+**Django Templates**
+- Server-side rendering
+- Template inheritance with base.html
+- Context processors for dynamic content
+- Built-in template tags and filters
+
+**Static Files Management**
+- ManifestStaticFilesStorage for production
+- Organized static and media directories
+- Collectstatic for deployment
+
+### Security Features
+- Custom User Model (AbstractUser extension)
+- Password validation (4-tier validation system)
+- Permission decorators (@login_required)
+- Staff-only access controls
+- CSRF protection middleware
+- Secure file upload handling
+- XFrame protection
+
+### Development Tools
+- Version 1.0.1 (tracked in settings)
+- Eastern Time Zone configuration
+- Debug mode for development
+- WSGI application server
+
+---
+
+## PAGE 3: SYSTEM ARCHITECTURE
+
+### Application Structure
+
+**Three-Tier Django Architecture**
+
+1. **Accounts App** - User Management Layer
+   - CustomUser model (extends AbstractUser)
+   - StudentProfile model (one-to-one with user)
+   - TeacherProfile model (one-to-one with user)
+   - Authentication views (login, registration)
+   - Role-based profile creation
+
+2. **Items App** - Core Functionality Layer
+   - Item model with status tracking
+   - Item submission, editing, deletion
+   - Search and filter views
+   - Category management
+   - Photo upload handling
+   - User-specific item dashboards
+
+3. **Claims App** - Verification & Processing Layer
+   - Claim model with workflow states
+   - Claim submission and tracking
+   - Admin review interface
+   - Status update automation
+   - Timestamp and audit tracking
+
+### Data Model Relationships
+
+**User → Items** (One-to-Many)
+- Users can submit multiple items
+- ForeignKey: Item.submitted_by → CustomUser
+- Cascade deletion (if user deleted, their items are removed)
+
+**User → Claims** (One-to-Many)
+- Users can submit multiple claims
+- ForeignKey: Claim.claimant → CustomUser
+- Cascade deletion protection
+
+**Item → Claims** (One-to-Many)
+- Each item can have multiple claims
+- ForeignKey: Claim.item → Item
+- Related name: item.claims
+
+**User → Reviewed Claims** (One-to-Many)
+- Staff members review claims
+- ForeignKey: Claim.reviewed_by → CustomUser
+- SET_NULL on deletion (preserves claim history)
+
+### Request Flow Architecture
+
+**User Request Flow:**
+1. User accesses URL → Django URL dispatcher
+2. URL patterns route to appropriate view function
+3. View queries database via Django ORM
+4. Business logic processes data
+5. View renders template with context
+6. HTML response returned to browser
+
+**Authentication Flow:**
+1. Login request → AuthenticationMiddleware
+2. Credentials validated against CustomUser
+3. Session created and stored
+4. @login_required decorator checks session
+5. Permission checks for staff-only views
+6. Authorized access granted or denied
+
+**Claim Processing Flow:**
+1. User submits claim form → ClaimForm validation
+2. Duplicate check prevents multiple pending claims
+3. Claim saved with "pending" status
+4. Admin filters claims by status
+5. Admin reviews and updates claim (approve/reject/complete)
+6. Item status automatically updated
+7. Timestamps and reviewer recorded
+8. User notified via messages framework
+
+### File Organization
+
+```
+lostandfound/
+├── lostandfound/          # Project configuration
+│   ├── settings.py        # Django settings
+│   ├── urls.py            # Main URL routing
+│   └── wsgi.py            # WSGI application
+├── accounts/              # User management app
+│   ├── models.py          # User models
+│   ├── views.py           # Auth views
+│   └── urls.py            # Auth URLs
+├── items/                 # Item management app
+│   ├── models.py          # Item model
+│   ├── views.py           # Item CRUD views
+│   ├── forms.py           # Item forms
+│   └── urls.py            # Item URLs
+├── claims/                # Claims processing app
+│   ├── models.py          # Claim model
+│   ├── views.py           # Claim workflow views
+│   ├── forms.py           # Claim forms
+│   └── urls.py            # Claim URLs
+├── templates/             # HTML templates
+│   ├── base.html          # Base template
+│   ├── accounts/          # Auth templates
+│   ├── items/             # Item templates
+│   └── claims/            # Claim templates
+├── static/                # CSS, JS, images
+├── media/                 # User uploads (photos)
+└── db.sqlite3             # SQLite database
+```
+
+### Security Architecture
+
+**Multi-Layer Security:**
+- Middleware: CSRF, XFrame, Session, Authentication
+- View-level: @login_required decorators, staff checks
+- Model-level: Custom user model with role types
+- Form-level: Django form validation
+- Database-level: ORM prevents SQL injection
+
+**Access Control Matrix:**
+- Students: Submit items, submit claims, view own data
+- Teachers: Same as students + view all items
+- Staff/Admin: Full access + claim review + user management
+
+### Scalability Design
+
+**Database Flexibility:**
+- Currently: SQLite3 (development)
+- Production-ready: psycopg2 included for PostgreSQL migration
+- ORM abstraction allows seamless database switching
+
+**Static Files:**
+- ManifestStaticFilesStorage for cache busting
+- Separate static and media directories
+- Collectstatic for CDN deployment
+
+**Performance Optimizations:**
+- Database indexing on created_at fields
+- Related name queries for efficient JOINs
+- ForeignKey relationships with select_related potential
+- Timestamp-based ordering for quick retrieval
