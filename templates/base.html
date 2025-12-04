@@ -65,7 +65,7 @@
                             <!-- Admin Dashboard - For admin/staff and teachers -->
                             {% if user.is_staff or user.user_type == 'teacher' %}
                                 <li><div class="dropdown-divider"></div></li>
-                                <li><a href="{% url 'admin_claims' %}"><i class="fas fa-tasks"></i> Manage Claims</a></li>
+                                <li><a href="{% url 'admin_claims' %}"><i class="fas fa-tasks"></i> Manage Claims & Inquiries</a></li>
                             {% endif %}
 
                             <li><div class="dropdown-divider"></div></li>

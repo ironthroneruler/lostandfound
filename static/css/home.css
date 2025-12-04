@@ -171,6 +171,16 @@
 .quick-action-card {
     text-decoration: none;
     color: inherit;
+    display: block;
+    transition: transform 0.3s;
+}
+
+.quick-action-card:hover {
+    transform: scale(1.05);
+}
+
+.quick-action-card:active {
+    transform: scale(0.98);
 }
 
 .quick-action-body {
