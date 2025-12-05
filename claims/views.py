@@ -82,8 +82,9 @@ def review_claim(request, claim_pk):
         elif action == 'complete':
             claim.status = 'completed'
             claim.item.status = 'returned'
+            claim.item.returned_to = claim.claimant
             claim.item.save()
-            messages.success(request, f'Item {claim.item.name} marked as returned.')
+            messages.success(request, f'Item {claim.item.name} marked as returned to {claim.claimant.get_full_name() or claim.claimant.username}.')
 
         claim.reviewed_by = request.user
         claim.reviewed_at = timezone.now()

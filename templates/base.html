@@ -47,7 +47,13 @@
 
                     <!-- Report Item - Available for ALL logged-in users -->
                     <li><a href="{% url 'report_item' %}"><i class="fa-solid fa-clipboard-list"></i> Report Item</a></li>
-                    
+
+                    <!-- My Items - Available for everyone who reports items -->
+                    <li><a href="{% url 'my_items' %}"><i class="fas fa-box"></i> My Items</a></li>
+
+                    <!-- My Claims - Available for all users -->
+                    <li><a href="{% url 'my_claims' %}"><i class="fas fa-clipboard-list"></i> My Claims</a></li>
+
                     <!-- User Dropdown -->
                     <li class="dropdown">
                         <span class="dropdown-toggle">
@@ -55,12 +61,6 @@
                         </span>
                         <ul class="dropdown-menu">
                             <li><a href="#"><i class="fas fa-user-circle"></i> Profile</a></li>
-
-                            <!-- My Items - Available for everyone who reports items -->
-                            <li><a href="{% url 'my_items' %}"><i class="fas fa-box"></i> My Items</a></li>
-
-                            <!-- My Claims - Available for all users -->
-                            <li><a href="{% url 'my_claims' %}"><i class="fas fa-clipboard-list"></i> My Claims</a></li>
 
                             <!-- Admin Dashboard - For admin/staff and teachers -->
                             {% if user.is_staff or user.user_type == 'teacher' %}
@@ -111,7 +111,7 @@
     <footer>
         <div class="container">
             <p class="mb-1">&copy; 2025 Lost & Found | FBLA Project</p>
-            <p class="mb-1">Powered By Django</p>
+            <p class="mb-1">Powered By Python (3.13.4)/Django (5.2.8)</p>
             <p class="footer-tagline mb-0">Helping students reunite with their belongings</p>
         </div>
     </footer>

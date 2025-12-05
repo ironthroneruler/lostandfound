@@ -38,7 +38,9 @@
             <div class="claim-item-details">
                 <div class="claim-item-content">
                     {% if claim.item.photo %}
-                        <img src="{{ claim.item.photo.url }}" alt="{{ claim.item.name }}" class="claim-item-photo">
+                        <div style="width: 60px; height: 60px; background: #f5f5f5; border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <img src="{{ claim.item.photo.url }}" alt="{{ claim.item.name }}" class="claim-item-photo">
+                        </div>
                     {% endif %}
                     <div class="claim-item-info">
                         <p class="claim-item-location">

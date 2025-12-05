@@ -48,6 +48,19 @@
     opacity: 1;
 }
 
+/* Static alerts - never dismissible, always visible */
+.static-alert {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: flex !important;
+    pointer-events: auto !important;
+}
+
+/* Ensure static alerts don't have close buttons */
+.static-alert .alert-close {
+    display: none !important;
+}
+
 /* Cards */
 
 .card {

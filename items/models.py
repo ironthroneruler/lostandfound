@@ -10,6 +10,8 @@ class Item(models.Model):
         ('jewelry', 'Jewelry & Accessories'),
         ('keys', 'Keys & ID Cards'),
         ('bags', 'Bags & Backpacks'),
+        ('water', 'Water Bottles'),
+        ('glasses', 'Eyeglasses'),
         ('other', 'Other'),
     )
 
@@ -32,6 +34,7 @@ class Item(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='available')
 
     submitted_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='submitted_items')
+    returned_to = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True, related_name='returned_items', help_text="User who received the item")
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -88,16 +88,26 @@
 .dropdown-menu {
     display: none;
     position: absolute;
-    top: 100%;
+    top: calc(100% + 0.25rem);
     right: 0;
     background-color: white;
     min-width: 200px;
     box-shadow: var(--shadow-lg);
     border-radius: 8px;
-    margin-top: 0.5rem;
+    padding-top: 0.25rem;
     list-style: none;
     overflow: hidden;
     z-index: 1000;
+}
+
+.dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -0.25rem;
+    left: 0;
+    right: 0;
+    height: 0.25rem;
+    background: transparent;
 }
 
 .dropdown:hover .dropdown-menu,

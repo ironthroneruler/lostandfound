@@ -4,7 +4,7 @@
 {% block content %}
 
 <div class="page-header">
-    <h1><i class="fas fa-search"></i> Browse Lost & Found</h1>
+    <h1><i class="fas fa-search"></i> Search Lost & Found</h1>
     <p class="text-muted">Search for your lost belongings</p>
 </div>
 
@@ -29,13 +29,9 @@
                 <i class="fas fa-filter filter-icon"></i>
                 <select name="category" class="form-select category-select">
                     <option value="">All Categories</option>
-                    <option value="electronics" {% if request.GET.category == 'electronics' %}selected{% endif %}>Electronics</option>
-                    <option value="clothing" {% if request.GET.category == 'clothing' %}selected{% endif %}>Clothing</option>
-                    <option value="books" {% if request.GET.category == 'books' %}selected{% endif %}>Books & Supplies</option>
-                    <option value="jewelry" {% if request.GET.category == 'jewelry' %}selected{% endif %}>Jewelry & Accessories</option>
-                    <option value="keys" {% if request.GET.category == 'keys' %}selected{% endif %}>Keys & ID Cards</option>
-                    <option value="bags" {% if request.GET.category == 'bags' %}selected{% endif %}>Bags & Backpacks</option>
-                    <option value="other" {% if request.GET.category == 'other' %}selected{% endif %}>Other</option>
+                    {% for value, label in categories %}
+                    <option value="{{ value }}" {% if request.GET.category == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
                 </select>
             </div>
 
@@ -64,7 +60,7 @@
             for "<strong>{{ request.GET.q }}</strong>"
         {% endif %}
         {% if request.GET.category %}
-            in <strong>{{ request.GET.category|title }}</strong>
+            in <strong>{% for value, label in categories %}{% if value == request.GET.category %}{{ label }}{% endif %}{% endfor %}</strong>
         {% endif %}
         - {{ items|length }} item{{ items|length|pluralize }} found
     </p>
@@ -141,7 +137,7 @@
             <p>There are currently no items in the lost and found.</p>
             {% if user.is_authenticated %}
             <a href="{% url 'report_item' %}" class="btn btn-primary">
-                <i class="fas fa-plus-circle"></i> Report an Item
+                <i class="fa-solid fa-clipboard-list"></i> Report Item
             </a>
             {% endif %}
         {% endif %}

@@ -77,6 +77,13 @@
                     <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: #6c757d;">
                         <i class="fas fa-clock"></i> Submitted {{ claim.created_at|timesince }} ago
                     </p>
+                    {% if claim.status == 'completed' and claim.item.returned_to %}
+                    <div style="margin: 0.75rem 0; padding: 0.75rem; background: #d4edda; border-left: 4px solid #28a745; border-radius: 4px;">
+                        <strong style="color: #155724;"><i class="fas fa-user-check"></i> Returned to:</strong>
+                        <span style="color: #155724;">{{ claim.item.returned_to.get_full_name|default:claim.item.returned_to.username }}</span>
+                        <br><small style="color: #155724;">{{ claim.item.returned_to.email }}</small>
+                    </div>
+                    {% endif %}
                 </div>
 
                 <!-- Right: Status & Actions -->

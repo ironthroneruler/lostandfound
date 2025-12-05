@@ -34,7 +34,14 @@ def item_list(request):
     category = request.GET.get('category')
     if category:
         items = items.filter(category=category)
-    return render(request, 'items/item_list.html', {'items': items})
+
+    # Get categories from the model for dynamic filtering
+    categories = Item.CATEGORY_CHOICES
+
+    return render(request, 'items/item_list.html', {
+        'items': items,
+        'categories': categories,
+    })
 
 @login_required
 def item_detail(request, pk):
