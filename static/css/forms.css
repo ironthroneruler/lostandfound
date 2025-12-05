@@ -248,11 +248,13 @@
 }
 
 .search-btn {
-    border-radius: 0;
+    border-radius: 0px 8px 8px 0px !important;
     border: 2px solid var(--primary-color);
     border-left: none;
     min-width: 120px;
     white-space: nowrap;
+    padding: 0.81rem 1.5rem !important;
+    height: 100%;
 }
 
 .clear-btn {

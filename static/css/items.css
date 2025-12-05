@@ -288,6 +288,24 @@
     color: #0c5460;
 }
 
+.status-box-verified {
+    background-color: #d1f2eb;
+    border-color: #1abc9c;
+    color: #0e6655;
+}
+
+.status-box-rejected {
+    background-color: #fff3cd;
+    border-color: #ffc107;
+    color: #856404;
+}
+
+.status-box-discarded {
+    background-color: #e2e3e5;
+    border-color: #6c757d;
+    color: #383d41;
+}
+
 .status-box-header {
     display: flex;
     align-items: center;

@@ -61,7 +61,7 @@
                 <p class="item-detail-description">{{ item.description }}</p>
             </div>
 
-            <!-- Status Box (if not available) -->
+            <!-- Status Box (based on current status) -->
             {% if item.status == 'returned' %}
                 <div class="status-box status-box-returned">
                     <div class="status-box-header">
@@ -85,24 +85,79 @@
                 <div class="status-box status-box-claimed">
                     <div class="status-box-header">
                         <i class="fas fa-info-circle"></i>
-                        <h4 class="status-box-title">Item Claimed</h4>
+                        <h4 class="status-box-title">Claim Submitted</h4>
                     </div>
                     <div class="status-box-content">
-                        <p style="margin: 0;">This item is pending return to the claimant.</p>
+                        <p style="margin: 0;">A claim has been submitted for this item and is pending admin review.</p>
+                    </div>
+                </div>
+            {% elif item.status == 'verified' %}
+                <div class="status-box status-box-verified">
+                    <div class="status-box-header">
+                        <i class="fas fa-check-circle"></i>
+                        <h4 class="status-box-title">Claim Verified</h4>
+                    </div>
+                    <div class="status-box-content">
+                        <p style="margin: 0;">The claim for this item has been verified by admin. Awaiting physical return.</p>
+                    </div>
+                </div>
+            {% elif item.status == 'rejected' %}
+                <div class="status-box status-box-rejected">
+                    <div class="status-box-header">
+                        <i class="fas fa-times-circle"></i>
+                        <h4 class="status-box-title">Claim Rejected</h4>
+                    </div>
+                    <div class="status-box-content">
+                        <p style="margin: 0;">A previous claim was rejected. This item is available for new claims.</p>
+                    </div>
+                </div>
+            {% elif item.status == 'discarded' %}
+                <div class="status-box status-box-discarded">
+                    <div class="status-box-header">
+                        <i class="fas fa-archive"></i>
+                        <h4 class="status-box-title">Item Discarded / Donated</h4>
+                    </div>
+                    <div class="status-box-content">
+                        {% if item.discard_reason %}
+                            <p style="margin: 0;">
+                                <strong>Reason:</strong> {{ item.discard_reason }}
+                            </p>
+                        {% endif %}
+                        {% if item.discard_date %}
+                            <p style="margin: 0.25rem 0 0 0;">
+                                <strong>Date:</strong> {{ item.discard_date|date:"M d, Y g:i A" }}
+                            </p>
+                        {% endif %}
+                        {% if item.discarded_by and user.is_staff %}
+                            <p style="margin: 0.25rem 0 0 0;">
+                                <strong>By:</strong> {{ item.discarded_by.get_full_name|default:item.discarded_by.username }}
+                            </p>
+                        {% endif %}
+                        {% if item.discard_notes and user.is_staff %}
+                            <p style="margin: 0.5rem 0 0 0; padding-top: 0.5rem; border-top: 1px solid #6c757d;">
+                                <strong>Notes:</strong> {{ item.discard_notes }}
+                            </p>
+                        {% endif %}
                     </div>
                 </div>
             {% endif %}
 
             <!-- Action Buttons - Compact -->
             <div class="item-detail-actions">
-                {% if item.status == 'available' %}
+                {% if item.status == 'unclaimed' or item.status == 'rejected' %}
                     {% if user.is_authenticated %}
-                        <a href="{% url 'submit_claim' item.pk %}" class="btn btn-primary">
-                            <i class="fas fa-hand-paper"></i> Claim Item
-                        </a>
-                        <a href="{% url 'submit_claim' item.pk %}" class="btn btn-outline-primary">
-                            <i class="fas fa-envelope"></i> Inquire
-                        </a>
+                        {% if user != item.submitted_by %}
+                            <a href="{% url 'submit_claim' item.pk %}" class="btn btn-primary">
+                                <i class="fas fa-hand-paper"></i> Claim Item
+                            </a>
+                            <a href="{% url 'submit_claim' item.pk %}" class="btn btn-outline-primary">
+                                <i class="fas fa-envelope"></i> Inquire
+                            </a>
+                        {% else %}
+                            <div class="alert-info" style="padding: 0.75rem; margin: 0; border-radius: 8px; background-color: #d1ecf1; border: 1px solid #bee5eb; color: #0c5460;">
+                                <i class="fas fa-info-circle"></i> You cannot claim an item that you reported.
+                            </div>
+                        {% endif %}
                     {% else %}
                         <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary">
                             <i class="fas fa-sign-in-alt"></i> Login to Claim
@@ -114,13 +169,22 @@
                     <i class="fas fa-arrow-left"></i> Back
                 </a>
 
-                {% if user.is_authenticated and user == item.submitted_by or user.is_staff %}
-                    <a href="{% url 'edit_item' item.pk %}" class="btn btn-warning btn-sm">
-                        <i class="fas fa-edit"></i> Edit
-                    </a>
-                    <a href="{% url 'delete_item' item.pk %}" class="btn btn-danger btn-sm">
-                        <i class="fas fa-trash"></i> Delete
-                    </a>
+                {% if user.is_authenticated %}
+                    {% if user == item.submitted_by or user.user_type == 'teacher' or user.user_type == 'admin' or user.is_staff %}
+                        <a href="{% url 'edit_item' item.pk %}" class="btn btn-warning btn-sm">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                    {% endif %}
+                    {% if user.user_type == 'teacher' or user.user_type == 'admin' or user.is_staff %}
+                        {% if item.status != 'discarded' and item.status != 'returned' %}
+                            <a href="{% url 'discard_item' item.pk %}" class="btn btn-outline-warning btn-sm">
+                                <i class="fas fa-archive"></i> Discard
+                            </a>
+                        {% endif %}
+                        <a href="{% url 'delete_item' item.pk %}" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    {% endif %}
                 {% endif %}
             </div>
 

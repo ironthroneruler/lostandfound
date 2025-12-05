@@ -60,15 +60,31 @@
             <small class="form-text">These notes are only visible to staff</small>
         </div>
 
+        <div class="form-group">
+            <label class="form-label">Discard Reason (if discarding)</label>
+            <select name="discard_reason_claim" class="form-select">
+                <option value="">-- Select if Discarding --</option>
+                <option value="Item not worth claiming">Item not worth claiming</option>
+                <option value="Damaged or broken">Damaged or broken</option>
+                <option value="Multiple failed claims">Multiple failed claims</option>
+                <option value="Low value item">Low value item</option>
+                <option value="Other">Other</option>
+            </select>
+            <small class="form-text">Only required if using the Discard button</small>
+        </div>
+
         <div class="form-actions" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
             <button type="submit" name="action" value="approve" class="btn btn-success">
-                <i class="fas fa-check"></i> Approve Claim
+                <i class="fas fa-check"></i> Verify Claim
             </button>
             <button type="submit" name="action" value="reject" class="btn btn-danger">
                 <i class="fas fa-times"></i> Reject Claim
             </button>
             <button type="submit" name="action" value="complete" class="btn btn-primary">
                 <i class="fas fa-check-double"></i> Mark as Returned
+            </button>
+            <button type="submit" name="action" value="discard" class="btn btn-warning">
+                <i class="fas fa-archive"></i> Discard / Donate
             </button>
             <a href="{% url 'admin_claims' %}" class="btn btn-outline-secondary">
                 <i class="fas fa-arrow-left"></i> Back to List

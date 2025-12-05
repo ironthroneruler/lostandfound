@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %}Discard Item - {{ item.name }}{% endblock %}
+{% block content %}
+
+<div class="form-container" style="max-width: 600px;">
+    <div class="form-header">
+        <h1><i class="fas fa-archive"></i> Discard / Donate Item</h1>
+        <p>Mark this item as discarded or donated</p>
+    </div>
+
+    <!-- Item Info -->
+    <div style="background: #fff3cd; padding: 1rem; border-radius: 8px; border-left: 4px solid #ffc107; margin-bottom: 1.5rem;">
+        <h3 style="margin: 0 0 0.5rem 0; font-size: 1rem; color: #856404;">
+            <i class="fas fa-exclamation-triangle"></i> Item to Discard
+        </h3>
+        <div style="color: #856404;">
+            <p style="margin: 0.25rem 0;"><strong>Name:</strong> {{ item.name }}</p>
+            <p style="margin: 0.25rem 0;"><strong>Category:</strong> {{ item.get_category_display }}</p>
+            <p style="margin: 0.25rem 0;"><strong>Location Found:</strong> {{ item.location_found }}</p>
+            <p style="margin: 0.25rem 0;"><strong>Date Found:</strong> {{ item.date_found|date:"M d, Y" }}</p>
+            <p style="margin: 0.25rem 0;"><strong>Days Since Reported:</strong> {{ item.days_since_reported }} days</p>
+        </div>
+    </div>
+
+    <!-- Discard Form -->
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label class="form-label" for="discard_reason">
+                Discard Reason <span class="required">*</span>
+            </label>
+            <select name="discard_reason" id="discard_reason" class="form-select" required>
+                <option value="">-- Select Reason --</option>
+                <option value="Unclaimed for extended period">Unclaimed for extended period</option>
+                <option value="Damaged or unusable">Damaged or unusable</option>
+                <option value="Low value item">Low value item</option>
+                <option value="Donated to charity">Donated to charity</option>
+                <option value="Multiple failed claims">Multiple failed claims</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="discard_notes">
+                Additional Notes (Optional)
+            </label>
+            <textarea
+                name="discard_notes"
+                id="discard_notes"
+                class="form-control"
+                rows="3"
+                placeholder="Enter details about disposal or donation (e.g., 'Donated to Goodwill on [date]', 'Disposed in trash - broken')"
+            ></textarea>
+            <small class="form-text">Record where the item was donated or how it was disposed</small>
+        </div>
+
+        <div style="background: #e2e3e5; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+            <p style="margin: 0; font-size: 0.9rem; color: #383d41;">
+                <i class="fas fa-info-circle"></i>
+                <strong>Note:</strong> Discarding this item will remove it from the public search.
+                The item record will be kept for administrative purposes.
+            </p>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-warning">
+                <i class="fas fa-archive"></i> Confirm Discard / Donate
+            </button>
+            <a href="{% url 'item_detail' item.pk %}" class="btn btn-outline-secondary">
+                <i class="fas fa-times"></i> Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

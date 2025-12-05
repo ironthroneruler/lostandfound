@@ -13,10 +13,16 @@ from .forms import ClaimForm
 def submit_claim(request, item_pk):
     item = get_object_or_404(Item, pk=item_pk)
 
-    if item.status != 'available':
+    # Prevent the user who reported the item from claiming it
+    if request.user == item.submitted_by:
+        messages.error(request, 'You cannot claim an item that you reported.')
+        return redirect('item_detail', pk=item_pk)
+
+    # Only allow claims on unclaimed items or items with rejected claims
+    if item.status not in ['unclaimed', 'rejected']:
         messages.error(request, 'This item is no longer available for claims.')
         return redirect('item_detail', pk=item_pk)
-    
+
     existing_claim = Claim.objects.filter(item=item, claimant=request.user, status='pending').first()
     if existing_claim:
         messages.warning(request, 'You already have a pending claim for this item.')
@@ -73,18 +79,28 @@ def review_claim(request, claim_pk):
 
         if action == 'approve':
             claim.status = 'approved'
-            claim.item.status = 'claimed'
+            claim.item.status = 'verified'
             claim.item.save()
-            messages.success(request, f'Claim approved for {claim.item.name}.')
+            messages.success(request, f'Claim approved and verified for {claim.item.name}.')
         elif action == 'reject':
             claim.status = 'rejected'
-            messages.success(request, f'Claim rejected for {claim.item.name}.')
+            claim.item.status = 'rejected'
+            claim.item.save()
+            messages.success(request, f'Claim rejected for {claim.item.name}. Item is now available for new claims.')
         elif action == 'complete':
             claim.status = 'completed'
             claim.item.status = 'returned'
             claim.item.returned_to = claim.claimant
             claim.item.save()
             messages.success(request, f'Item {claim.item.name} marked as returned to {claim.claimant.get_full_name() or claim.claimant.username}.')
+        elif action == 'discard':
+            discard_reason = request.POST.get('discard_reason_claim', 'Discarded during claim review')
+            claim.item.status = 'discarded'
+            claim.item.discard_date = timezone.now()
+            claim.item.discard_reason = discard_reason
+            claim.item.discarded_by = request.user
+            claim.item.save()
+            messages.success(request, f'Item {claim.item.name} marked as discarded/donated.')
 
         claim.reviewed_by = request.user
         claim.reviewed_at = timezone.now()

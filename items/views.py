@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
+from django.utils import timezone
 from .models import Item
 from .forms import ItemForm
 
@@ -23,7 +24,8 @@ def report_item(request):
 
 @login_required
 def item_list(request):
-    items = Item.objects.filter(status='available')
+    # Show items that are unclaimed or have rejected claims (available for new claims)
+    items = Item.objects.filter(status__in=['unclaimed', 'rejected'])
 
     query = request.GET.get('q')
     if query:
@@ -57,8 +59,12 @@ def my_items(request):
 def edit_item(request, pk):
     item = get_object_or_404(Item, pk=pk)
 
-    # Security check: Only owner or staff can edit
-    if request.user != item.submitted_by and not request.user.is_staff:
+    # Security check: Only the student who reported it, teachers, or admins can edit
+    is_owner = request.user == item.submitted_by
+    is_teacher = request.user.user_type == 'teacher'
+    is_admin = request.user.user_type == 'admin' or request.user.is_staff
+
+    if not (is_owner or is_teacher or is_admin):
         messages.error(request, 'You do not have permission to edit this item.')
         return redirect('item_detail', pk=pk)
 
@@ -77,8 +83,11 @@ def edit_item(request, pk):
 def delete_item(request, pk):
     item = get_object_or_404(Item, pk=pk)
 
-    # Security check: Only owner or staff can delete
-    if request.user != item.submitted_by and not request.user.is_staff:
+    # Security check: Only teachers or admins can delete (students cannot delete)
+    is_teacher = request.user.user_type == 'teacher'
+    is_admin = request.user.user_type == 'admin' or request.user.is_staff
+
+    if not (is_teacher or is_admin):
         messages.error(request, 'You do not have permission to delete this item.')
         return redirect('item_detail', pk=pk)
 
@@ -90,3 +99,34 @@ def delete_item(request, pk):
 
     # If GET request, show confirmation page
     return render(request, 'items/delete_item.html', {'item': item})
+
+@login_required
+def discard_item(request, pk):
+    item = get_object_or_404(Item, pk=pk)
+
+    # Security check: Only teachers or admins can discard
+    is_teacher = request.user.user_type == 'teacher'
+    is_admin = request.user.user_type == 'admin' or request.user.is_staff
+
+    if not (is_teacher or is_admin):
+        messages.error(request, 'You do not have permission to discard this item.')
+        return redirect('item_detail', pk=pk)
+
+    if request.method == 'POST':
+        # Get discard details from form
+        discard_reason = request.POST.get('discard_reason', 'Manual discard by admin')
+        discard_notes = request.POST.get('discard_notes', '')
+
+        # Update item status and discard info
+        item.status = 'discarded'
+        item.discard_date = timezone.now()
+        item.discard_reason = discard_reason
+        item.discard_notes = discard_notes
+        item.discarded_by = request.user
+        item.save()
+
+        messages.success(request, f'Item "{item.name}" has been marked as discarded/donated.')
+        return redirect('item_list')
+
+    # If GET request, show confirmation page
+    return render(request, 'items/discard_item.html', {'item': item})
