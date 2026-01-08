@@ -8,6 +8,12 @@
     box-sizing: border-box;
 }
 
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
 :root {
     --primary-color: #4169E1;      /* Royal Blue (War Eagle Blue) */
     --primary-dark: #2C4A9E;       /* Darker Royal Blue */
@@ -34,6 +40,8 @@ body {
     flex-direction: column;
     overflow-x: hidden;
     overflow-y: auto;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 main {
