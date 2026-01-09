@@ -94,9 +94,8 @@ py manage.py runserver 0.0.0.0:8000
 - Claim items
 - Admin dashboard for claim management
 
-## Project Timeline
-- MVP: December 1, 2025
-- Final: March 1, 2025
+## Project Due Date
+- Final: January 30, 2025
 ```
 
 ---
