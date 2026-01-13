@@ -1,4 +1,4 @@
-/* Navigation bar */
+/* NAVIGATION BAR */
 
 .navbar {
     background-color: #2C4A9E;
@@ -27,6 +27,12 @@
     color: #e0e0e0;
 }
 
+/* ACCESSIBILITY: Better focus state for navbar brand */
+.navbar-brand:focus {
+    outline: 3px solid white;
+    outline-offset: 3px;
+}
+
 .navbar-brand i {
     font-size: 1.4rem;
 }
@@ -52,6 +58,13 @@
     background-color: rgba(255, 255, 255, 0.1);
 }
 
+/* ACCESSIBILITY: Clear focus indicator for navbar links */
+.navbar-menu a:focus {
+    outline: 3px solid white;
+    outline-offset: 2px;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
 .btn-register {
     background-color: var(--primary-color);
     color: white !important;
@@ -67,7 +80,17 @@
     color: white !important;
 }
 
-/* Dropdown */
+/* ACCESSIBILITY: Register button focus state */
+.btn-register:focus {
+    outline: 3px solid white;
+    outline-offset: 3px;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+/* ========================================
+   DROPDOWN MENU
+   ======================================== */
+
 .dropdown {
     position: relative;
 }
@@ -87,6 +110,13 @@
     background-color: rgba(255, 255, 255, 0.1);
 }
 
+/* ACCESSIBILITY: Focus state for dropdown toggle */
+.dropdown-toggle:focus {
+    outline: 3px solid white;
+    outline-offset: 2px;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
 .dropdown-menu {
     display: none;
     position: absolute;
@@ -97,9 +127,12 @@
     box-shadow: var(--shadow-lg);
     border-radius: 8px;
     padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
     list-style: none;
     overflow: hidden;
     z-index: 1000;
+    /* ACCESSIBILITY: Border for better definition */
+    border: 1px solid var(--border-color);
 }
 
 .dropdown-menu::before {
@@ -115,6 +148,20 @@
 .dropdown:hover .dropdown-menu,
 .dropdown.active .dropdown-menu {
     display: block;
+    /* ACCESSIBILITY: Announce when dropdown opens */
+    animation: dropdownFadeIn 0.2s ease;
+}
+
+/* ACCESSIBILITY: Smooth dropdown animation */
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .dropdown-menu a {
@@ -123,10 +170,23 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    transition: background-color 0.2s;
 }
 
 .dropdown-menu a:hover {
     background-color: var(--light-bg);
+}
+
+/* ACCESSIBILITY: Strong focus indicator for dropdown items */
+.dropdown-menu a:focus {
+    outline: 3px solid var(--primary-color);
+    outline-offset: -3px;
+    background-color: #e0f2ff;
+}
+
+/* ACCESSIBILITY: Active/selected state */
+.dropdown-menu a:active {
+    background-color: #bae6ff;
 }
 
 .dropdown-divider {
@@ -135,7 +195,8 @@
     margin: 0.5rem 0;
 }
 
-/* Mobile Menu Toggle */
+/* MOBILE MENU TOGGLE */
+
 .navbar-toggle {
     display: none;
     background: none;
@@ -143,4 +204,70 @@
     color: white;
     font-size: 1.5rem;
     cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.navbar-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ACCESSIBILITY: Focus state for mobile toggle */
+.navbar-toggle:focus {
+    outline: 3px solid white;
+    outline-offset: 2px;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* ACCESSIBILITY: Active state */
+.navbar-toggle:active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ACCESSIBILITY ENHANCEMENTS */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .navbar-menu a:focus,
+    .dropdown-toggle:focus,
+    .navbar-toggle:focus {
+        outline-width: 4px;
+    }
+    
+    .dropdown-menu {
+        border-width: 2px;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .navbar-menu a,
+    .dropdown-toggle,
+    .dropdown-menu,
+    .btn-register {
+        transition: none;
+    }
+    
+    @keyframes dropdownFadeIn {
+        from, to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+}
+
+/* Keyboard-only focus (works with main.js) */
+.navbar-menu a:focus:not([data-focus-visible]),
+.dropdown-toggle:focus:not([data-focus-visible]),
+.navbar-toggle:focus:not([data-focus-visible]) {
+    outline: none;
+}
+
+/* Force visible focus for keyboard users */
+.navbar-menu a[data-focus-visible],
+.dropdown-toggle[data-focus-visible],
+.navbar-toggle[data-focus-visible] {
+    outline: 3px solid white;
+    outline-offset: 2px;
 }

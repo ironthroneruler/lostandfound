@@ -92,6 +92,7 @@ footer a:hover {
     pointer-events: none;
     overflow: hidden;
     background-color: var(--light-bg);
+    user-select: none;
 }
 
 .bg-art svg {
@@ -99,4 +100,131 @@ footer a:hover {
     height: 100%;
     object-fit: cover;
     opacity: 1.0;
+}
+
+/* ACCESSIBILITY FEATURES*/
+
+/* Skip to main content link (appears on Tab) */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--primary-color);
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    z-index: 100;
+    font-weight: 600;
+    border-radius: 0 0 4px 0;
+    transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+    top: 0;
+    outline: 3px solid white;
+    outline-offset: 2px;
+}
+
+/* Screen reader only content (visible to assistive tech, hidden visually) */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Focus indicators for keyboard navigation */
+a:focus,
+button:focus,
+input:focus,
+select:focus,
+textarea:focus,
+[tabindex]:focus {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Enhanced focus for buttons */
+.btn:focus {
+    outline: 3px solid var(--primary-dark);
+    box-shadow: 0 0 0 3px rgba(65, 105, 225, 0.3);
+}
+
+/* Focus visible only for keyboard users (works with main.js) */
+:focus:not([data-focus-visible]) {
+    outline: none;
+}
+
+[data-focus-visible] {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* High contrast mode support (for users who need extra contrast) */
+@media (prefers-contrast: high) {
+    .skip-link,
+    a:focus,
+    button:focus,
+    input:focus,
+    select:focus,
+    textarea:focus {
+        outline-width: 4px;
+        outline-color: currentColor;
+    }
+    
+    :root {
+        --text-muted: #475569; /* Darker gray for better contrast */
+    }
+}
+
+/* Reduced motion support (for users sensitive to animations) */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .skip-link {
+        transition: none;
+    }
+}
+
+/* Dark mode support (respects user's system preference) */
+@media (prefers-color-scheme: dark) {
+    /* Optional: Add dark mode styles if you want to support it in the future */
+    /* Currently keeping light mode for consistency */
+}
+
+/* Print styles (for accessibility when printing) */
+@media print {
+    .skip-link,
+    .navbar,
+    .alert,
+    footer {
+        display: none;
+    }
+    
+    body {
+        background: white;
+        color: black;
+    }
+    
+    a {
+        text-decoration: underline;
+        color: black;
+    }
+    
+    a[href^="http"]:after {
+        content: " (" attr(href) ")";
+        font-size: 0.8em;
+    }
 }

@@ -1,4 +1,6 @@
-/* Alerts/Messages */
+/* ========================================
+   ALERTS / MESSAGES
+   ======================================== */
 
 .alert {
     padding: 1rem;
@@ -8,6 +10,8 @@
     align-items: center;
     gap: 0.75rem;
     animation: slideDown 0.3s ease;
+    /* ACCESSIBILITY: Ensure sufficient contrast */
+    border-left: 4px solid currentColor;
 }
 
 .alert-success {
@@ -42,9 +46,20 @@
     cursor: pointer;
     color: inherit;
     opacity: 0.7;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: opacity 0.2s, background-color 0.2s;
 }
 
 .alert-close:hover {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* ACCESSIBILITY: Focus state for close button */
+.alert-close:focus {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
     opacity: 1;
 }
 
@@ -61,7 +76,9 @@
     display: none !important;
 }
 
-/* Cards */
+/* ========================================
+   CARDS
+   ======================================== */
 
 .card {
     background-color: white;
@@ -69,12 +86,28 @@
     box-shadow: var(--shadow);
     overflow: hidden;
     margin-bottom: 0.4rem;
+    /* ACCESSIBILITY: Add subtle border for definition */
+    border: 1px solid var(--border-color);
+}
+
+/* ACCESSIBILITY: Cards with links should indicate interactivity */
+.card:has(a) {
+    transition: box-shadow 0.3s;
+}
+
+.card:has(a):hover {
+    box-shadow: var(--shadow-lg);
 }
 
 /* Feature cards on home page - no transform on hover to prevent layout shift */
 .feature-card:hover {
     transform: none;
     box-shadow: var(--shadow-lg);
+}
+
+/* ACCESSIBILITY: Focus within card */
+.card:focus-within {
+    box-shadow: 0 0 0 3px rgba(65, 105, 225, 0.2);
 }
 
 .card-header {
@@ -97,7 +130,9 @@
     padding: 0.85rem;
 }
 
-/* Badges */
+/* ========================================
+   BADGES
+   ======================================== */
 
 .badge {
     padding: 0.4rem 0.8rem;
@@ -106,10 +141,14 @@
     font-weight: 600;
     text-transform: uppercase;
     color: white;
+    /* ACCESSIBILITY: Ensure text is readable */
+    line-height: 1.2;
 }
 
 .badge-pending {
     background: var(--warning-color);
+    /* ACCESSIBILITY: Ensure contrast on warning color */
+    color: #000;
 }
 
 .badge-approved {
@@ -135,6 +174,8 @@
     text-transform: uppercase;
     background-color: var(--white);
     box-shadow: var(--shadow);
+    /* ACCESSIBILITY: Ensure contrast */
+    line-height: 1.2;
 }
 
 .status-available {
@@ -185,7 +226,9 @@
     font-weight: bold;
 }
 
-/* Page header */
+/* ========================================
+   PAGE HEADER
+   ======================================== */
 
 .page-header {
     text-align: center;
@@ -198,6 +241,8 @@
     color: var(--text-dark);
     font-size: 1.8rem;
     margin-bottom: 0.5rem;
+    /* ACCESSIBILITY: Ensure proper heading hierarchy */
+    line-height: 1.2;
 }
 
 .page-header p {
@@ -205,7 +250,9 @@
     font-size: 0.95rem;
 }
 
-/* Empty state */
+/* ========================================
+   EMPTY STATE
+   ======================================== */
 
 .empty-state {
     text-align: center;
@@ -214,25 +261,104 @@
     border-radius: 8px;
     box-shadow: var(--shadow);
     margin-top: 2rem;
+    /* ACCESSIBILITY: Add border for definition */
+    border: 1px solid var(--border-color);
 }
 
 .empty-state > i {
     font-size: 4rem;
     color: var(--text-muted);
     margin-bottom: 1rem;
+    /* ACCESSIBILITY: Decorative icons should be aria-hidden in HTML */
 }
 
 .empty-state h2 {
     color: var(--text-dark);
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
+    line-height: 1.3;
 }
 
 .empty-state p {
     color: var(--text-muted);
     margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.empty-state .btn {
+    /* ACCESSIBILITY: Ensure buttons have sufficient touch target */
+    min-height: 44px;
+    min-width: 44px;
 }
 
 .empty-state .btn i {
     font-size: 1rem;
+}
+
+/* ========================================
+   ACCESSIBILITY ENHANCEMENTS
+   ======================================== */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .card,
+    .alert,
+    .empty-state {
+        border-width: 2px;
+    }
+    
+    .status-badge,
+    .badge {
+        border-width: 3px;
+    }
+    
+    .alert-close:focus {
+        outline-width: 3px;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .alert {
+        animation: none;
+    }
+    
+    .card,
+    .feature-card,
+    .alert-close {
+        transition: none;
+    }
+}
+
+/* Print styles */
+@media print {
+    .alert-close {
+        display: none;
+    }
+    
+    .card,
+    .alert,
+    .empty-state {
+        box-shadow: none;
+        border: 1px solid #000;
+    }
+    
+    .status-badge,
+    .badge {
+        border: 1px solid #000;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    /* ACCESSIBILITY: Larger touch targets on mobile */
+    .alert-close {
+        padding: 0.5rem;
+        font-size: 1.75rem;
+    }
+    
+    .empty-state .btn {
+        min-height: 48px;
+        padding: 0.75rem 1.5rem;
+    }
 }
