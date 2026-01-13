@@ -28,7 +28,15 @@
                         {% for item in slider_items %}
                             <div class="lf-slide" data-lf-slide>
                                 <div class="lf-slide-media">
-                                    <img src="{{ item.photo.url }}" alt="{{ item.name }}">
+                                    <img
+                                        src="{{ item.photo.url }}"
+                                        alt="{{ item.name }}"
+                                        data-lf-tooltip
+                                        data-title="{{ item.name|escape }}"
+                                        data-date-found="{{ item.date_found|date:'M j, Y' }}"
+                                        data-category="{{ item.get_category_display|escape }}"
+                                        data-location="{{ item.location_found|escape }}"
+                                    >
                                 </div>
                             </div>
                         {% endfor %}
@@ -128,7 +136,15 @@
                         {% for item in slider_items %}
                             <div class="lf-slide" data-lf-slide>
                                 <div class="lf-slide-media">
-                                    <img src="{{ item.photo.url }}" alt="{{ item.name }}">
+                                    <img
+                                        src="{{ item.photo.url }}"
+                                        alt="{{ item.name }}"
+                                        data-lf-tooltip
+                                        data-title="{{ item.name|escape }}"
+                                        data-date-found="{{ item.date_found|date:'M j, Y' }}"
+                                        data-category="{{ item.get_category_display|escape }}"
+                                        data-location="{{ item.location_found|escape }}"
+                                    >
                                 </div>
                             </div>
                         {% endfor %}

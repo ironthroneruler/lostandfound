@@ -171,3 +171,97 @@ document.addEventListener('DOMContentLoaded', function() {
         setActive(0);
     });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Prevent duplicate initialization
+    if (document.querySelector('.lf-hover-tooltip')) return;
+
+    const tooltip = document.createElement('div');
+    tooltip.className = 'lf-hover-tooltip';
+
+    const titleEl = document.createElement('div');
+    titleEl.className = 'lf-hover-tooltip-title';
+
+    const metaEl = document.createElement('div');
+    metaEl.className = 'lf-hover-tooltip-meta';
+
+    tooltip.appendChild(titleEl);
+    tooltip.appendChild(metaEl);
+    document.body.appendChild(tooltip);
+
+    let activeTarget = null;
+
+    function setTooltipContent(target) {
+        const title = target.dataset.title || '';
+        const dateFound = target.dataset.dateFound || '';
+        const category = target.dataset.category || '';
+        const location = target.dataset.location || '';
+
+        titleEl.textContent = title;
+
+        const parts = [];
+        if (dateFound) parts.push('Found: ' + dateFound);
+        if (category) parts.push('Category: ' + category);
+        if (location) parts.push('Location: ' + location);
+        metaEl.textContent = parts.join(' · ');
+    }
+
+    function setTooltipPosition(clientX, clientY) {
+        const margin = 12;
+        const offsetY = 16;
+        
+        // Temporarily position to measure
+        tooltip.style.left = clientX + 'px';
+        tooltip.style.top = (clientY + offsetY) + 'px';
+
+        const rect = tooltip.getBoundingClientRect();
+        
+        // Horizontal clamping
+        let nextLeft = clientX;
+        const minLeft = rect.width / 2 + margin;
+        const maxLeft = window.innerWidth - rect.width / 2 - margin;
+
+        if (nextLeft < minLeft) nextLeft = minLeft;
+        if (nextLeft > maxLeft) nextLeft = maxLeft;
+        tooltip.style.left = nextLeft + 'px';
+
+        // Vertical flipping if close to bottom
+        if (rect.bottom > window.innerHeight - margin) {
+            tooltip.style.top = (clientY - rect.height - offsetY) + 'px';
+        }
+    }
+
+    // Use event delegation for reliability
+    document.body.addEventListener('mouseover', function(e) {
+        const target = e.target.closest('[data-lf-tooltip]');
+        if (target) {
+            activeTarget = target;
+            setTooltipContent(target);
+            tooltip.classList.add('is-visible');
+            setTooltipPosition(e.clientX, e.clientY);
+        }
+    });
+
+    document.body.addEventListener('mousemove', function(e) {
+        if (activeTarget) {
+            setTooltipPosition(e.clientX, e.clientY);
+        }
+    });
+
+    document.body.addEventListener('mouseout', function(e) {
+        const target = e.target.closest('[data-lf-tooltip]');
+        if (target && target === activeTarget) {
+             // Check if we really left the element (not just to a child, though img has none)
+             if (!target.contains(e.relatedTarget)) {
+                 activeTarget = null;
+                 tooltip.classList.remove('is-visible');
+             }
+        }
+    });
+
+    window.addEventListener('scroll', function() {
+        if (!activeTarget) return;
+        tooltip.classList.remove('is-visible');
+        activeTarget = null;
+    }, { passive: true });
+});

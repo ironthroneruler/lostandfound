@@ -44,6 +44,33 @@ body {
     padding: 0 !important;
 }
 
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(65, 105, 225, 0.4);
+    border-radius: 5px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+    transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(65, 105, 225, 0.65);
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: rgba(65, 105, 225, 0.8);
+    background-clip: content-box;
+}
+
 main {
     flex: 1;
     display: flex;
