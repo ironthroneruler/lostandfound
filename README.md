@@ -17,7 +17,7 @@ A Django web application to help students and staff report found items, search f
 
 1. Clone the repository
 ```bash
-git clone <your-repo-url>
+git clone https://www.github.com/hcdevspace/lostandfound
 cd lostandfound
 ```
 
