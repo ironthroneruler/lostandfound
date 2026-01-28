@@ -6,7 +6,13 @@ A Django web application to help students and staff report found items, search f
 ## Team Members
 - Harshit, Aaryan, Himaghna
 
+## Technologies Used
+- Django 5.2.8
+- Python 3.14
+- PostgreSQL
+
 ## Setup Instructions
+
 ### Installation
 
 1. Clone the repository
