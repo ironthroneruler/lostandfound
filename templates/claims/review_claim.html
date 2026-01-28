@@ -2,51 +2,99 @@
 {% block title %}Review Claim{% endblock %}
 {% block content %}
 
-<div class="form-container" style="max-width: 800px;">
+<div class="form-container review-claim-container">
     <div class="form-header">
         <h1><i class="fas fa-gavel"></i> Review Claim</h1>
         <p>Make a decision on this claim submission</p>
     </div>
 
     <!-- Item & Claim Info -->
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
+    <div class="review-info-grid">
         <!-- Item Card -->
-        <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
-            <h3 style="margin: 0 0 0.5rem 0; font-size: 1.1rem;">Item Details</h3>
+        <div class="review-card item-card">
+            <h3 class="review-card-title">
+                Item Details 
+                <span class="item-id-badge">ID: {{ claim.item.id }}</span>
+            </h3>
             {% if claim.item.photo %}
-                <div style="width: 100%; height: 200px; background: #ffffff; border-radius: 4px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
-                    <img src="{{ claim.item.photo.url }}" alt="{{ claim.item.name }}" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 4px;">
+                <div class="review-photo-container">
+                    <img src="{{ claim.item.photo.url }}" alt="{{ claim.item.name }}" class="review-photo">
                 </div>
             {% endif %}
-            <p style="margin: 0.25rem 0;"><strong>Name:</strong> {{ claim.item.name }}</p>
-            <p style="margin: 0.25rem 0;"><strong>Category:</strong> {{ claim.item.get_category_display }}</p>
-            <p style="margin: 0.25rem 0;"><strong>Location:</strong> {{ claim.item.location_found }}</p>
-            <p style="margin: 0.25rem 0;"><strong>Date Found:</strong> {{ claim.item.date_found|date:"M d, Y" }}</p>
-            <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;"><strong>Description:</strong> {{ claim.item.description }}</p>
+            <div class="review-details">
+                <p class="review-detail"><strong>Name:</strong> {{ claim.item.name }}</p>
+                <p class="review-detail"><strong>Category:</strong> {{ claim.item.get_category_display }}</p>
+                <p class="review-detail"><strong>Location:</strong> {{ claim.item.location_found }}</p>
+                <p class="review-detail"><strong>Date Found:</strong> {{ claim.item.date_found|date:"M d, Y" }}</p>
+                <p class="review-detail-description"><strong>Description:</strong> {{ claim.item.description }}</p>
+            </div>
         </div>
 
         <!-- Claimant Card -->
-        <div style="background: #e7f3ff; padding: 1rem; border-radius: 8px;">
-            <h3 style="margin: 0 0 0.5rem 0; font-size: 1.1rem;">Claimant Details</h3>
-            <p style="margin: 0.25rem 0;"><strong>Name:</strong> {{ claim.claimant.get_full_name|default:claim.claimant.username }}</p>
-            <p style="margin: 0.25rem 0;"><strong>Email:</strong> {{ claim.claimant.email }}</p>
-            <p style="margin: 0.25rem 0;"><strong>Type:</strong> {{ claim.claimant.user_type|title }}</p>
-            <p style="margin: 0.25rem 0;"><strong>Request Type:</strong> {{ claim.get_claim_type_display }}</p>
-            <p style="margin: 0.25rem 0;"><strong>Contact Method:</strong> {{ claim.contact_method }}</p>
-            <p style="margin: 0.25rem 0;"><strong>Submitted:</strong> {{ claim.created_at|date:"M d, Y g:i A" }}</p>
+        <div class="review-card claimant-card">
+            <h3 class="review-card-title">Claimant Details</h3>
+            <div class="review-details">
+                <p class="review-detail"><strong>Name:</strong> {{ claim.claimant.get_full_name|default:claim.claimant.username }}</p>
+                <p class="review-detail"><strong>Email:</strong> {{ claim.claimant.email }}</p>
+                <p class="review-detail"><strong>Type:</strong> {{ claim.claimant.user_type|title }}</p>
+                <p class="review-detail"><strong>Request Type:</strong> {{ claim.get_claim_type_display }}</p>
+                <p class="review-detail"><strong>Contact Method:</strong> {{ claim.contact_method }}</p>
+                <p class="review-detail"><strong>Submitted:</strong> {{ claim.created_at|date:"M d, Y g:i A" }}</p>
+            </div>
+            
+            <!-- Current Status -->
+            <div class="review-status-box status-{{ claim.status }}">
+                <strong>Current Status:</strong><br>
+                <span class="status-text">{{ claim.get_status_display }}</span>
+            </div>
         </div>
     </div>
 
     <!-- Claim Description -->
-    <div style="background: #fff3cd; padding: 1rem; border-radius: 8px; border-left: 4px solid #ffc107; margin-bottom: 1rem;">
-        <h3 style="margin: 0 0 0.5rem 0; font-size: 1rem;">Claimant's Description / Proof</h3>
-        <p style="margin: 0;">{{ claim.description }}</p>
+    <div class="review-description-box">
+        <h3 class="review-box-title">Claimant's Description / Proof</h3>
+        <p>{{ claim.description }}</p>
     </div>
 
     {% if claim.additional_proof %}
-    <div style="background: #d1ecf1; padding: 1rem; border-radius: 8px; border-left: 4px solid #17a2b8; margin-bottom: 1rem;">
-        <h3 style="margin: 0 0 0.5rem 0; font-size: 1rem;">Additional Proof</h3>
-        <p style="margin: 0;">{{ claim.additional_proof }}</p>
+    <div class="review-proof-box">
+        <h3 class="review-box-title">Additional Proof</h3>
+        <p>{{ claim.additional_proof }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Workflow Info Box -->
+    {% if claim.status == 'pending' %}
+    <div class="review-workflow-box workflow-pending">
+        <h3 class="review-box-title"><i class="fas fa-info-circle"></i> Workflow</h3>
+        <p class="workflow-text">
+            <strong>Step 1:</strong> Verify the claim by clicking "Verify Claim" if the claimant's description matches the item.<br>
+            <strong>Step 2:</strong> Once verified, you can mark the item as returned when the claimant picks it up.
+        </p>
+    </div>
+    {% elif claim.status == 'approved' %}
+    <div class="review-workflow-box workflow-approved">
+        <h3 class="review-box-title"><i class="fas fa-check-circle"></i> Claim Verified</h3>
+        <p class="workflow-text">
+            This claim has been verified. You can now mark the item as returned when the claimant picks it up.
+        </p>
+        
+        {% if claim.item.verified_date %}
+        <div class="countdown-display">
+            <div class="countdown-icon">
+                <i class="fas fa-hourglass-half"></i>
+            </div>
+            <div class="countdown-info">
+                <strong>Discard Countdown:</strong>
+                {% if claim.item.is_ready_for_discard %}
+                    <span class="countdown-ready">Ready to discard (60 days elapsed)</span>
+                {% else %}
+                    <span class="countdown-active">{{ claim.item.days_until_discard }} days remaining</span>
+                    <small>Started: {{ claim.item.verified_date|date:"M d, Y" }}</small>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
     </div>
     {% endif %}
 
@@ -73,19 +121,37 @@
             <small class="form-text">Only required if using the Discard button</small>
         </div>
 
-        <div class="form-actions" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-            <button type="submit" name="action" value="approve" class="btn btn-success">
-                <i class="fas fa-check"></i> Verify Claim
-            </button>
-            <button type="submit" name="action" value="reject" class="btn btn-danger">
-                <i class="fas fa-times"></i> Reject Claim
-            </button>
-            <button type="submit" name="action" value="complete" class="btn btn-primary">
-                <i class="fas fa-check-double"></i> Mark as Returned
-            </button>
-            <button type="submit" name="action" value="discard" class="btn btn-warning">
-                <i class="fas fa-archive"></i> Discard / Donate
-            </button>
+        <div class="form-actions review-actions">
+            {% if claim.status == 'pending' %}
+                <button type="submit" name="action" value="approve" class="btn btn-success">
+                    <i class="fas fa-check"></i> Verify Claim
+                </button>
+                <button type="submit" name="action" value="reject" class="btn btn-danger">
+                    <i class="fas fa-times"></i> Reject Claim
+                </button>
+            {% elif claim.status == 'approved' %}
+                <button type="submit" name="action" value="complete" class="btn btn-primary">
+                    <i class="fas fa-check-double"></i> Mark as Returned
+                </button>
+            {% endif %}
+            
+            <!-- Only show discard button if 60-day countdown has elapsed -->
+            {% if claim.item.is_ready_for_discard %}
+                <button type="submit" name="action" value="discard" class="btn btn-warning">
+                    <i class="fas fa-archive"></i> Discard / Donate
+                </button>
+            {% elif claim.item.verified_date %}
+                <button type="button" class="btn btn-secondary" disabled title="Available in {{ claim.item.days_until_discard }} days">
+                    <i class="fas fa-archive"></i> Discard ({{ claim.item.days_until_discard }}d)
+                </button>
+            {% endif %}
+            
+            {% if claim.status != 'pending' %}
+                <button type="submit" name="action" value="undo" class="btn btn-secondary" onclick="return confirm('Are you sure you want to undo this action and revert the claim to pending status?')">
+                    <i class="fas fa-undo"></i> Undo Action
+                </button>
+            {% endif %}
+            
             <a href="{% url 'admin_claims' %}" class="btn btn-outline-secondary">
                 <i class="fas fa-arrow-left"></i> Back to List
             </a>

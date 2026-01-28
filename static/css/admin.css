@@ -1,0 +1,546 @@
+/* ============================================
+   ADMIN PANEL STYLES
+   ============================================ */
+
+/* Tab Navigation */
+.admin-tabs-container {
+    margin-bottom: 2rem;
+}
+
+.admin-tabs {
+    border-bottom: 2px solid #dee2e6;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.admin-tab {
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: #6c757d;
+    border-bottom: 3px solid transparent;
+    font-weight: normal;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.admin-tab:hover {
+    color: #495057;
+    background: rgba(0, 123, 255, 0.05);
+}
+
+.admin-tab.active-tab {
+    color: #007bff;
+    border-bottom: 3px solid #007bff;
+    font-weight: bold;
+}
+
+/* Count Badge */
+.count-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #dc3545;
+    color: white;
+    font-size: 0.7rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 10px;
+    font-weight: bold;
+    min-width: 18px;
+    text-align: center;
+}
+
+/* Item ID Badge */
+.item-id-badge {
+    display: inline-block;
+    background: #6c757d;
+    color: white;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-weight: bold;
+    margin-left: 0.5rem;
+}
+
+/* ============================================
+   ADMIN ITEMS GRID (Pending Approval)
+   ============================================ */
+
+.admin-items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+.admin-item-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s ease;
+}
+
+.admin-item-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.admin-item-card.pending-item {
+    border: 2px solid #ffc107;
+}
+
+.item-status-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.item-photo-container {
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.item-photo {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.item-title {
+    margin: 0 0 1rem 0;
+    color: #333;
+    padding-right: 100px;
+    font-size: 1.25rem;
+}
+
+.item-details {
+    margin-bottom: 1rem;
+}
+
+.item-detail-row {
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+}
+
+.item-detail-row.item-time {
+    color: #6c757d;
+}
+
+.item-description-box {
+    margin: 1rem 0;
+    padding: 0.75rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.item-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-flex {
+    flex: 1;
+}
+
+/* ============================================
+   CLAIMS LIST
+   ============================================ */
+
+.claims-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.claim-card {
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 1.5rem;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.2s ease;
+}
+
+.claim-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.claim-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.claim-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.claim-title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+}
+
+.claim-type-label {
+    font-size: 0.85rem;
+    color: #6c757d;
+    font-weight: normal;
+}
+
+.claim-detail {
+    margin: 0.25rem 0;
+    color: #495057;
+}
+
+.claim-description-box {
+    margin: 0.5rem 0;
+    padding: 0.75rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    word-wrap: break-word;
+}
+
+.claim-proof-box {
+    margin: 0.5rem 0;
+    padding: 0.75rem;
+    background: #e7f3ff;
+    border-radius: 4px;
+    word-wrap: break-word;
+}
+
+.claim-time {
+    margin: 0.5rem 0 0 0;
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.claim-returned-box {
+    margin: 0.75rem 0 0 0;
+    padding: 0.75rem;
+    background: #d4edda;
+    border-left: 4px solid #28a745;
+    border-radius: 4px;
+    max-width: 100%;
+    color: #155724;
+}
+
+.claim-returned-box strong {
+    color: #155724;
+}
+
+.claim-returned-box small {
+    color: #155724;
+}
+
+/* Claim Countdown Box */
+.claim-countdown-box {
+    margin: 0.75rem 0 0 0;
+    padding: 0.75rem;
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.claim-countdown-box i {
+    margin-right: 0.5rem;
+    color: #856404;
+}
+
+.countdown-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-weight: bold;
+    margin-left: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.countdown-badge.countdown-ready {
+    background: #f8d7da;
+    color: #721c24;
+    animation: pulse 2s infinite;
+}
+
+.countdown-badge.countdown-warning {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.countdown-badge.countdown-active {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+/* Claims Actions Panel */
+.claim-actions-panel {
+    min-width: 200px;
+    max-width: 200px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.claim-actions-panel .status-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.claim-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+/* ============================================
+   REVIEW CLAIM PAGE
+   ============================================ */
+
+.review-claim-container {
+    max-width: 800px;
+}
+
+.review-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.review-card {
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.review-card.item-card {
+    background: #f8f9fa;
+}
+
+.review-card.claimant-card {
+    background: #e7f3ff;
+}
+
+.review-card-title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+}
+
+.review-photo-container {
+    width: 100%;
+    height: 200px;
+    background: #ffffff;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.review-photo {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
+.review-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.review-detail {
+    margin: 0.25rem 0;
+}
+
+.review-detail-description {
+    margin: 0.5rem 0 0 0;
+    font-size: 0.9rem;
+}
+
+/* Review Status Box */
+.review-status-box {
+    margin-top: 1rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.review-status-box.status-pending {
+    background: #fff3cd;
+}
+
+.review-status-box.status-approved {
+    background: #d4edda;
+}
+
+.review-status-box.status-rejected {
+    background: #f8d7da;
+}
+
+.review-status-box.status-completed {
+    background: #d1ecf1;
+}
+
+.review-status-box .status-text {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+/* Review Description/Proof Boxes */
+.review-description-box {
+    background: #fff3cd;
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid #ffc107;
+    margin-bottom: 1rem;
+}
+
+.review-proof-box {
+    background: #d1ecf1;
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid #17a2b8;
+    margin-bottom: 1rem;
+}
+
+.review-box-title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+}
+
+.review-description-box p,
+.review-proof-box p {
+    margin: 0;
+}
+
+/* Review Workflow Boxes */
+.review-workflow-box {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.review-workflow-box.workflow-pending {
+    background: #e7f3ff;
+    border-left: 4px solid #007bff;
+}
+
+.review-workflow-box.workflow-approved {
+    background: #d4edda;
+    border-left: 4px solid #28a745;
+}
+
+.workflow-text {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Countdown Display */
+.countdown-display {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #fff3cd;
+    border: 2px solid #ffc107;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.countdown-icon {
+    font-size: 2rem;
+    color: #856404;
+    flex-shrink: 0;
+}
+
+.countdown-info {
+    flex: 1;
+}
+
+.countdown-info strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: #333;
+}
+
+.countdown-active {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #0c5460;
+}
+
+.countdown-ready {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #721c24;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+.countdown-info small {
+    display: block;
+    margin-top: 0.25rem;
+    color: #6c757d;
+    font-size: 0.85rem;
+}
+
+.review-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    .admin-items-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .claim-content {
+        flex-direction: column;
+    }
+
+    .claim-actions-panel {
+        min-width: 100%;
+        max-width: 100%;
+        text-align: left;
+    }
+
+    .review-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .review-actions {
+        flex-direction: column;
+    }
+
+    .review-actions .btn {
+        width: 100%;
+    }
+}

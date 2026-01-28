@@ -2,6 +2,75 @@
    ALERTS / MESSAGES
    ======================================== */
 
+/* Flash Messages Container - Floating Overlay */
+.flash-messages-container {
+    position: fixed;
+    top: 80px; /* Below navbar */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    width: 90%;
+    max-width: 600px;
+    pointer-events: none; /* Allow clicks through container */
+}
+
+.flash-message {
+    pointer-events: auto; /* But allow clicks on messages */
+    margin-bottom: 1rem;
+    /* Enhanced shadow for floating effect */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 
+                0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Auto-dismiss animation */
+.flash-message {
+    animation: flashSlideDown 0.3s ease-out, 
+               flashFadeIn 0.3s ease-out, 
+               flashFadeOut 0.5s ease-out 4.5s forwards;
+}
+
+/* Hover to pause auto-dismiss */
+.flash-message:hover {
+    animation-play-state: paused;
+}
+
+/* Flash message animations */
+@keyframes flashSlideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes flashFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes flashFadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+/* Make sure messages stack nicely */
+.flash-messages-container > .flash-message:not(:last-child) {
+    margin-bottom: 0.75rem;
+}
+
+/* Alert Base Styles */
 .alert {
     padding: 1rem;
     margin-bottom: 1rem;
@@ -296,6 +365,23 @@
 }
 
 /* ========================================
+   RESPONSIVE - FLASH MESSAGES
+   ======================================== */
+
+@media (max-width: 768px) {
+    .flash-messages-container {
+        top: 70px;
+        width: 95%;
+        max-width: none;
+        padding: 0 0.5rem;
+    }
+    
+    .flash-message {
+        font-size: 0.9rem;
+    }
+}
+
+/* ========================================
    ACCESSIBILITY ENHANCEMENTS
    ======================================== */
 
@@ -315,11 +401,16 @@
     .alert-close:focus {
         outline-width: 3px;
     }
+    
+    .flash-message {
+        border: 2px solid currentColor;
+    }
 }
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
-    .alert {
+    .alert,
+    .flash-message {
         animation: none;
     }
     
@@ -333,6 +424,10 @@
 /* Print styles */
 @media print {
     .alert-close {
+        display: none;
+    }
+    
+    .flash-messages-container {
         display: none;
     }
     

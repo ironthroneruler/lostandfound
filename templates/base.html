@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{% static 'css/buttons.css' %}">
     <link rel="stylesheet" href="{% static 'css/items.css' %}">
     <link rel="stylesheet" href="{% static 'css/claims.css' %}">
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
     <link rel="stylesheet" href="{% static 'css/registration.css' %}">
     <link rel="stylesheet" href="{% static 'css/report.css' %}">
@@ -99,25 +100,30 @@
                     <!-- My Claims - Available for all users -->
                     <li><a href="{% url 'my_claims' %}"><i class="fas fa-clipboard-list"></i> My Claims</a></li>
 
-                    <!-- User Dropdown -->
+                    <!-- Admin Dropdown - For admin/staff and teachers -->
+                    {% if user.is_staff or user.user_type == 'teacher' or user.user_type == 'admin' %}
+                    <li class="dropdown">
+                        <span class="dropdown-toggle">
+                            <i class="fas fa-shield-alt"></i> Admin
+                        </span>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'admin_claims' %}"><i class="fas fa-tasks"></i> Manage Reports, Claims, & Inquiries</a></li>
+                            
+                            <!-- Admin Only - Manage User Registrations -->
+                            {% if user.is_staff or user.user_type == 'admin' %}
+                                <li><a href="{% url 'pending_users' %}"><i class="fas fa-user-check"></i> Manage User Registrations</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                    {% endif %}
+
+                    <!-- User Account Dropdown -->
                     <li class="dropdown">
                         <span class="dropdown-toggle">
                             <i class="fas fa-user"></i> {{ user.first_name }} ({% if user.is_staff %}Admin{% else %}{{ user.get_user_type_display }}{% endif %})
                         </span>
                         <ul class="dropdown-menu">
                             <li><a href="#"><i class="fas fa-user-circle"></i> Profile</a></li>
-
-                            <!-- Admin Dashboard - For admin/staff and teachers -->
-                            {% if user.is_staff or user.user_type == 'teacher' %}
-                                <li><div class="dropdown-divider"></div></li>
-                                <li><a href="{% url 'admin_claims' %}"><i class="fas fa-tasks"></i> Manage Claims & Inquiries</a></li>
-                            {% endif %}
-
-                            <!-- Admin Only - Manage User Registrations -->
-                            {% if user.is_staff or user.user_type == 'admin' %}
-                                <li><a href="{% url 'pending_users' %}"><i class="fas fa-user-check"></i> Manage User Registrations</a></li>
-                            {% endif %}
-
                             <li><div class="dropdown-divider"></div></li>
                             <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                         </ul>
@@ -133,9 +139,9 @@
 
     <!-- Flash Messages -->
     {% if messages %}
-        <div class="container mt-3">
+        <div class="flash-messages-container">
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
+                <div class="alert alert-{{ message.tags }} flash-message">
                     {% if message.tags == 'success' %}
                         <i class="fas fa-check-circle"></i>
                     {% elif message.tags == 'error' %}

@@ -45,6 +45,9 @@ class Item(models.Model):
     approval_date = models.DateTimeField(null=True, blank=True, help_text="Date when item was approved and received")
     approval_notes = models.TextField(blank=True, help_text="Notes from staff about receiving the item")
 
+    # Verification tracking (when claim is verified)
+    verified_date = models.DateTimeField(null=True, blank=True, help_text="Date when claim was verified (starts 60-day countdown)")
+    
     # Discard tracking
     discard_date = models.DateTimeField(null=True, blank=True, help_text="Date when item was discarded/donated")
     discard_reason = models.CharField(max_length=200, blank=True, help_text="Reason for discarding (e.g., 'Unclaimed for 90 days', 'Damaged', etc.)")
@@ -64,6 +67,40 @@ class Item(models.Model):
         """Calculate number of days since item was reported"""
         from django.utils import timezone
         return (timezone.now() - self.created_at).days
+    
+    def days_since_verified(self):
+        """Calculate number of days since claim was verified"""
+        from django.utils import timezone
+        if not self.verified_date:
+            return None
+        return (timezone.now() - self.verified_date).days
+    
+    def days_until_discard(self):
+        """Calculate days remaining until item should be discarded (60 days after verification)"""
+        days_since = self.days_since_verified()
+        if days_since is None:
+            return None
+        return max(0, 60 - days_since)
+    
+    def is_ready_for_discard(self):
+        """Check if item has reached 60-day countdown and should be discarded"""
+        days_until = self.days_until_discard()
+        return days_until is not None and days_until == 0
+    
+    def get_discard_status(self):
+        """Get human-readable discard countdown status"""
+        days_until = self.days_until_discard()
+        if days_until is None:
+            return None
+        
+        if days_until == 0:
+            return "Ready to discard"
+        elif days_until <= 7:
+            return f"⚠️ {days_until} days remaining"
+        elif days_until <= 14:
+            return f"{days_until} days remaining"
+        else:
+            return f"{days_until} days remaining"
 
     def is_eligible_for_auto_discard(self, threshold_days=90):
         """Check if item is eligible for automatic discard"""

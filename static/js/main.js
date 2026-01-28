@@ -182,6 +182,117 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+// REPORT ITEM FORM HANDLING
+document.addEventListener('DOMContentLoaded', function() {
+    const uploadBox = document.getElementById('uploadBox');
+    const photoInput = document.getElementById('photoInput');
+    const previewImage = document.getElementById('previewImage');
+    const removeImageBtn = document.getElementById('removeImageBtn');
+    const uploadEmpty = document.getElementById('uploadEmpty');
+    const reportForm = document.getElementById('reportForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitText = document.getElementById('submitText');
+
+    // Only run if report form elements exist
+    if (!reportForm || !uploadBox || !photoInput) return;
+
+    // Prevent double submission
+    let isSubmitting = false;
+
+    reportForm.addEventListener('submit', function(e) {
+        if (isSubmitting) {
+            e.preventDefault();
+            return false;
+        }
+
+        // Validate form
+        if (!reportForm.checkValidity()) {
+            return true; // Let browser handle validation
+        }
+
+        // Set submitting state
+        isSubmitting = true;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Submitting...</span>';
+    });
+
+    // Only trigger file input on uploadBox click, not on button clicks
+    uploadBox.addEventListener('click', function(e) {
+        // Don't trigger if clicking remove button or submit button
+        if (e.target.closest('#removeImageBtn') || 
+            e.target.closest('button[type="submit"]') ||
+            e.target.closest('.report-form-actions')) {
+            return;
+        }
+        photoInput.click();
+    });
+
+    uploadBox.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        uploadBox.classList.add('dragover');
+    });
+
+    uploadBox.addEventListener('dragleave', function() {
+        uploadBox.classList.remove('dragover');
+    });
+
+    uploadBox.addEventListener('drop', function(e) {
+        e.preventDefault();
+        uploadBox.classList.remove('dragover');
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            handleFileSelect(files[0]);
+        }
+    });
+
+    photoInput.addEventListener('change', function(e) {
+        if (e.target.files.length > 0) {
+            handleFileSelect(e.target.files[0]);
+        }
+    });
+
+    function handleFileSelect(file) {
+        // Validate file type
+        const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+        if (!validTypes.includes(file.type)) {
+            alert('Please select a valid image file (JPG, PNG, GIF, or WEBP)');
+            photoInput.value = '';
+            return;
+        }
+
+        // Validate file size (5MB)
+        const maxSize = 5 * 1024 * 1024;
+        if (file.size > maxSize) {
+            alert('Image file size cannot exceed 5MB');
+            photoInput.value = '';
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewImage.src = e.target.result;
+            previewImage.style.display = 'block';
+            removeImageBtn.style.display = 'inline-block';
+            uploadEmpty.style.display = 'none';
+            uploadBox.classList.add('has-image');
+        };
+        reader.readAsDataURL(file);
+    }
+
+    removeImageBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        photoInput.value = '';
+        previewImage.src = '';
+        previewImage.style.display = 'none';
+        removeImageBtn.style.display = 'none';
+        uploadEmpty.style.display = 'flex';
+        uploadBox.classList.remove('has-image');
+    });
+});
+
+
+
 // HERO TAGLINE RANDOMIZER
 document.addEventListener('DOMContentLoaded', function() {
     const randomizer = document.querySelector('[data-hero-randomizer]');

@@ -73,10 +73,21 @@ def admin_claims(request):
     else:
         claims = Claim.objects.filter(status=status_filter)
 
+    # Calculate counts for each category
+    counts = {
+        'pending_approval': Item.objects.filter(status='reported').count(),
+        'pending': Claim.objects.filter(status='pending').count(),
+        'approved': Claim.objects.filter(status='approved').count(),
+        'rejected': Claim.objects.filter(status='rejected').count(),
+        'completed': Claim.objects.filter(status='completed').count(),
+        'all': Claim.objects.count()
+    }
+
     return render(request, 'claims/admin_claims.html', {
         'claims': claims,
         'current_filter': status_filter,
-        'pending_approval_items': pending_approval_items
+        'pending_approval_items': pending_approval_items,
+        'counts': counts
     })
 
 #Admin view to review claim detail
@@ -95,14 +106,20 @@ def review_claim(request, claim_pk):
         if action == 'approve':
             claim.status = 'approved'
             claim.item.status = 'verified'
+            claim.item.verified_date = timezone.now()  # Start 60-day countdown
             claim.item.save()
-            messages.success(request, f'Claim approved and verified for {claim.item.name}.')
+            messages.success(request, f'Claim approved and verified for {claim.item.name}. 60-day countdown started.')
         elif action == 'reject':
             claim.status = 'rejected'
             claim.item.status = 'rejected'
             claim.item.save()
             messages.success(request, f'Claim rejected for {claim.item.name}. Item is now available for new claims.')
         elif action == 'complete':
+            # NEW WORKFLOW: Must verify claim first before marking as returned
+            if claim.status != 'approved':
+                messages.error(request, 'You must verify the claim first before marking the item as returned.')
+                return redirect('review_claim', claim_pk=claim_pk)
+            
             claim.status = 'completed'
             claim.item.status = 'returned'
             claim.item.returned_to = claim.claimant
@@ -116,6 +133,24 @@ def review_claim(request, claim_pk):
             claim.item.discarded_by = request.user
             claim.item.save()
             messages.success(request, f'Item {claim.item.name} marked as discarded/donated.')
+        elif action == 'undo':
+            # Undo action - revert to pending state
+            previous_item_status = 'unclaimed' if claim.item.status in ['verified', 'rejected'] else claim.item.status
+            
+            claim.status = 'pending'
+            claim.reviewed_by = None
+            claim.reviewed_at = None
+            claim.admin_notes = admin_notes  # Keep any notes
+            
+            # Reset item status appropriately
+            if claim.item.status in ['verified', 'rejected', 'returned']:
+                claim.item.status = 'unclaimed'
+                claim.item.returned_to = None
+                claim.item.save()
+            
+            claim.save()
+            messages.success(request, f'Action undone. Claim for {claim.item.name} has been reverted to pending status.')
+            return redirect('admin_claims')
 
         claim.reviewed_by = request.user
         claim.reviewed_at = timezone.now()
