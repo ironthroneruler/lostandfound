@@ -195,17 +195,6 @@ Special thanks to:
 
 ---
 
-## Notes on Academic Integrity
-
-All code in this project was either:
-1. Written by the development team
-2. Cited and properly attributed (see above)
-3. Used under appropriate open-source licenses
-
-Any code adapted from external sources has been modified to fit our specific use case and properly attributed.
-
----
-
 **Last Updated:** January 28, 2025
 **Project:** School Lost & Found Management System
-**Event:** FBLA Coding & Programming 2025-2025
+**Event:** FBLA Website Coding & Development 2025-2026
