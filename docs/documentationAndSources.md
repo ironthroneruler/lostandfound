@@ -13,7 +13,7 @@ This document lists all external resources, libraries, tutorials, and references
 - **URL:** https://www.djangoproject.com/
 - **License:** BSD-3-Clause
 - **Purpose:** Main web framework for backend development
-- **Citation:** Django Software Foundation. (2024). Django: The Web framework for perfectionists with deadlines. Retrieved from https://www.djangoproject.com/
+- **Citation:** Django Software Foundation. (2025). Django: The Web framework for perfectionists with deadlines. Retrieved from https://www.djangoproject.com/
 
 ### Font Awesome
 - **Name:** Font Awesome
