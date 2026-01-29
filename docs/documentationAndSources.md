@@ -185,15 +185,7 @@ This document lists all external resources, libraries, tutorials, and references
 
 ---
 
-## Acknowledgments
 
-Special thanks to:
-- FBLA organization for project guidelines
-- Django community for excellent documentation
-- Teachers and mentors for guidance
-- Beta testers for feedback
-
----
 
 **Last Updated:** January 28, 2025
 **Project:** School Lost & Found Management System
