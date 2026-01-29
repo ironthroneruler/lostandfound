@@ -681,13 +681,4 @@
     color: white;
 }
 
-/* Reviews Marquee */
-.reviews-marquee {
-    margin-top: 1rem;
-    padding: 1.5rem 0;
-    font-size: 1.1rem;
-}
 
-.star-icon {
-    color: #f59e0b;
-}
