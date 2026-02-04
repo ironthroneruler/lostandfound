@@ -15,7 +15,7 @@
     </div>
 
     <div class="report-form-card">
-        <form method="POST" enctype="multipart/form-data" class="report-form-grid">
+        <form method="POST" enctype="multipart/form-data" class="report-form-grid" id="reportForm">
             {% csrf_token %}
 
             <div class="report-form-left">
@@ -96,15 +96,15 @@
                             <p class="report-upload-sub">or click to select an image</p>
                         </div>
                     </div>
-                    <input type="file" id="photoInput" name="photo" accept="image/*" required hidden>
+                    <input type="file" id="photoInput" name="photo" accept="image/jpeg,image/jpg,image/png,image/gif,image/webp" required hidden>
                 </div>
                 {% if form.photo.errors %}
                     <span class="error-message">{{ form.photo.errors.0 }}</span>
                 {% endif %}
 
                 <div class="report-form-actions">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-paper-plane"></i> Submit Report
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <i class="fas fa-paper-plane"></i> <span id="submitText">Submit Report</span>
                     </button>
                     <a href="{% url 'item_list' %}" class="btn btn-outline-primary">
                         <i class="fas fa-times"></i> Cancel
@@ -115,60 +115,4 @@
     </div>
 </div>
 
-<script>
-    const uploadBox = document.getElementById('uploadBox');
-    const photoInput = document.getElementById('photoInput');
-    const previewImage = document.getElementById('previewImage');
-    const removeImageBtn = document.getElementById('removeImageBtn');
-    const uploadEmpty = document.getElementById('uploadEmpty');
-
-    uploadBox.addEventListener('click', () => photoInput.click());
-
-    uploadBox.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        uploadBox.classList.add('dragover');
-    });
-
-    uploadBox.addEventListener('dragleave', () => {
-        uploadBox.classList.remove('dragover');
-    });
-
-    uploadBox.addEventListener('drop', (e) => {
-        e.preventDefault();
-        uploadBox.classList.remove('dragover');
-        const files = e.dataTransfer.files;
-        if (files.length > 0) {
-            handleFileSelect(files[0]);
-        }
-    });
-
-    photoInput.addEventListener('change', (e) => {
-        if (e.target.files.length > 0) {
-            handleFileSelect(e.target.files[0]);
-        }
-    });
-
-    function handleFileSelect(file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            previewImage.src = e.target.result;
-            previewImage.style.display = 'block';
-            removeImageBtn.style.display = 'inline-block';
-            uploadEmpty.style.display = 'none';
-            uploadBox.classList.add('has-image');
-        };
-        reader.readAsDataURL(file);
-    }
-
-    removeImageBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        photoInput.value = '';
-        previewImage.src = '';
-        previewImage.style.display = 'none';
-        removeImageBtn.style.display = 'none';
-        uploadEmpty.style.display = 'flex';
-        uploadBox.classList.remove('has-image');
-    });
-</script>
 {% endblock %}
