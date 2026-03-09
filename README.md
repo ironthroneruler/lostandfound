@@ -94,24 +94,5 @@ py manage.py runserver 0.0.0.0:8000
 - Claim items
 - Admin dashboard for claim management
 
-## Project Due Date
-- Final: January 30, 2025
-```
 
----
-
-## 🔍 Verify Files Were Created - 
-
-**In VS Code Explorer, you should see:**
-```
-lostandfound/
-├── .env                 ← Should be here
-├── .gitignore          ← Should be here
-├── requirements.txt    ← Should be here
-├── README.md           ← Should be here
-├── manage.py
-├── lostandfound/
-├── accounts/
-├── items/
-└── claims/
 
