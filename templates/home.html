@@ -4,7 +4,18 @@
 
 {% block content %}
 
-{% if not user.is_authenticated %}
+<div id="demo-mode-container" class="demo-mode-hidden">
+    <div class="demo-mode-content">
+        <h1 class="demo-mode-title">FBLA Website Coding and Development</h1>
+        <p class="demo-mode-subtitle">A Lost & Found Management System</p>
+    </div>
+</div>
+
+<div id="demo-trigger" class="demo-trigger">demo</div>
+<div id="demo-stage-indicator" class="demo-stage-indicator"></div>
+
+
+<main id="main-content" class="demo-mode-main">{% if not user.is_authenticated %}
 <div class="hero-section" role="region" aria-labelledby="hero-title">
     <div class="hero-grid">
         <div class="hero-copy">
@@ -258,5 +269,6 @@
 </div>
 
 {% endif %}
+</main>
 
 {% endblock %}

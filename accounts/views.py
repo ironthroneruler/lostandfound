@@ -8,18 +8,16 @@ from items.models import Item
 
 # Create your views here.
 def home(request):
-    # Get recent items if user is logged in
+    slider_items = Item.objects.filter(status__in=['unclaimed', 'rejected']).order_by('-created_at')[:8]
     recent_items = None
     pending_approval_items = None
-    slider_items = Item.objects.filter(status__in=['unclaimed', 'rejected']).order_by('-created_at')[:8]
+    is_demo = request.GET.get('demo') == 'true'
 
-    if request.user.is_authenticated:
-        # For admins/teachers, show items pending approval
+    if request.user.is_authenticated and not is_demo:
         if request.user.is_staff or request.user.user_type in ['teacher', 'admin']:
             pending_approval_items = Item.objects.filter(status='reported').order_by('-created_at')[:5]
             recent_items = Item.objects.filter(status__in=['unclaimed', 'rejected']).order_by('-created_at')[:3]
         else:
-            # For students, show unclaimed items
             recent_items = Item.objects.filter(status__in=['unclaimed', 'rejected']).order_by('-created_at')[:3]
 
     return render(request, 'home.html', {
@@ -152,6 +150,11 @@ def logout_view(request):
     logout(request)
     messages.success(request, 'You have been logged out.')
     return redirect('login')
+
+def demo_logout(request):
+    from django.http import JsonResponse
+    logout(request)
+    return JsonResponse({'status': 'logged_out'})
 
 @login_required
 def pending_users(request):

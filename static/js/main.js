@@ -547,3 +547,343 @@ document.addEventListener('DOMContentLoaded', function() {
         e.target.classList.remove('focus-visible');
     });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const demoTrigger = document.getElementById('demo-trigger');
+    const demoModeContainer = document.getElementById('demo-mode-container');
+    const mainContent = document.getElementById('main-content');
+    const navbar = document.querySelector('nav.navbar');
+    const footer = document.querySelector('footer');
+    const stageIndicator = document.getElementById('demo-stage-indicator');
+    const flashMessages = document.querySelector('.flash-messages-container');
+    const demoCursor = document.getElementById('demo-cursor');
+    
+    const STAGES = {
+        0: { name: 'Title Page', url: null },
+        1: { name: 'Home (Logged Out)', url: '/?demo=true' },
+        2: { name: 'Register Student', url: '/register/student/' },
+        3: { name: 'Register Teacher', url: '/register/teacher/' },
+        4: { name: 'Login', url: '/login/' },
+        5: { name: 'Home (Logged In)', url: '/' }
+    };
+    
+    const TOTAL_STAGES = Object.keys(STAGES).length;
+
+    function getCurrentStage() {
+        if (sessionStorage.getItem('demoMode') === 'true') {
+            return parseInt(sessionStorage.getItem('demoStage')) || 0;
+        }
+        return 0;
+    }
+
+    function updateStageIndicator(stage) {
+        if (!stageIndicator) return;
+        const lastStageNum = TOTAL_STAGES - 1;
+        stageIndicator.textContent = `Stage: ${stage}/${lastStageNum}`;
+    }
+
+    function hideFlashMessages() {
+        if (flashMessages) {
+            flashMessages.setAttribute('data-demo-hidden', 'true');
+        }
+    }
+
+    function showFlashMessages() {
+        if (flashMessages) {
+            flashMessages.removeAttribute('data-demo-hidden');
+        }
+    }
+
+    function hideCursor() {
+        if (demoCursor) {
+            demoCursor.classList.remove('active');
+        }
+    }
+
+    function showCursorAt(x, y) {
+        if (!demoCursor) return;
+        demoCursor.style.left = x + 'px';
+        demoCursor.style.top = y + 'px';
+        demoCursor.classList.add('active');
+        sessionStorage.setItem('demoCursorX', x);
+        sessionStorage.setItem('demoCursorY', y);
+    }
+
+    function moveCursorTo(targetX, targetY, duration = 800) {
+        if (!demoCursor) return Promise.resolve();
+        
+        return new Promise(resolve => {
+            const startX = parseFloat(demoCursor.style.left) || window.innerWidth / 2;
+            const startY = parseFloat(demoCursor.style.top) || window.innerHeight / 2;
+            const startTime = performance.now();
+
+            function animate(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+
+                const currentX = startX + (targetX - startX) * progress;
+                const currentY = startY + (targetY - startY) * progress;
+
+                showCursorAt(currentX, currentY);
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    resolve();
+                }
+            }
+
+            requestAnimationFrame(animate);
+        });
+    }
+
+    function typeInElement(element, text, delay = 100) {
+        return new Promise(resolve => {
+            let i = 0;
+            element.value = '';
+            element.focus();
+
+            function typeChar() {
+                if (i < text.length) {
+                    element.value += text.charAt(i);
+                    i++;
+                    setTimeout(typeChar, delay);
+                } else {
+                    resolve();
+                }
+            }
+            typeChar();
+        });
+    }
+
+    function executeStageTransition(fromStage, toStage) {
+        if (fromStage === 1 && toStage === 2) {
+            return new Promise(async resolve => {
+                const registerBtn = document.querySelector('a.cta-login-btn[href*="register/student"]');
+                
+                window.scrollBy({ top: 300, behavior: 'smooth' });
+                
+                await new Promise(r => setTimeout(r, 600));
+                
+                showCursorAt(window.innerWidth / 2, window.innerHeight / 2);
+                
+                await new Promise(r => setTimeout(r, 400));
+                
+                if (registerBtn) {
+                    const rect = registerBtn.getBoundingClientRect();
+                    const targetX = rect.left + rect.width / 2;
+                    const targetY = rect.top + rect.height / 2;
+                    
+                    await moveCursorTo(targetX, targetY, 400);
+                    await new Promise(r => setTimeout(r, 300));
+                } else {
+                    await new Promise(r => setTimeout(r, 600));
+                }
+                
+                resolve();
+            });
+        } else if (fromStage === 2 && toStage === 3) {
+            return new Promise(async resolve => {
+                const teacherLink = document.querySelector('a.registration-link[href*="register/teacher"]');
+                
+                window.scrollBy({ top: 600, behavior: 'smooth' });
+                
+                await new Promise(r => setTimeout(r, 600));
+                
+                if (teacherLink) {
+                    const rect = teacherLink.getBoundingClientRect();
+                    const targetX = rect.left + rect.width / 2;
+                    const targetY = rect.top + rect.height / 2;
+                    
+                    await moveCursorTo(targetX, targetY, 400);
+                    await new Promise(r => setTimeout(r, 300));
+                } else {
+                    await new Promise(r => setTimeout(r, 600));
+                }
+                
+                resolve();
+            });
+        } else if (fromStage === 3 && toStage === 4) {
+            return new Promise(async resolve => {
+                const loginLink = document.querySelector('a.registration-link[href*="login"]');
+                
+                window.scrollBy({ top: 600, behavior: 'smooth' });
+                
+                await new Promise(r => setTimeout(r, 600));
+                
+                if (loginLink) {
+                    const rect = loginLink.getBoundingClientRect();
+                    const targetX = rect.left + rect.width / 2;
+                    const targetY = rect.top + rect.height / 2;
+                    
+                    await moveCursorTo(targetX, targetY, 400);
+                    await new Promise(r => setTimeout(r, 300));
+                } else {
+                    await new Promise(r => setTimeout(r, 600));
+                }
+                
+                resolve();
+            });
+        } else if (fromStage === 4 && toStage === 5) {
+            return new Promise(async resolve => {
+                const usernameInput = document.querySelector('input[name="username"]');
+                const passwordInput = document.querySelector('input[name="password"]');
+                const loginButton = document.querySelector('button[type="submit"]');
+                
+                if (usernameInput) {
+                    const rect = usernameInput.getBoundingClientRect();
+                    await moveCursorTo(rect.left + rect.width / 2, rect.top + rect.height / 2, 400);
+                    await new Promise(r => setTimeout(r, 300));
+                    await typeInElement(usernameInput, 'david123', 120);
+                }
+                
+                if (passwordInput) {
+                    const rect = passwordInput.getBoundingClientRect();
+                    await moveCursorTo(rect.left + rect.width / 2, rect.top + rect.height / 2, 400);
+                    await new Promise(r => setTimeout(r, 300));
+                }
+                
+                if (loginButton) {
+                    const rect = loginButton.getBoundingClientRect();
+                    await moveCursorTo(rect.left + rect.width / 2, rect.top + rect.height / 2, 400);
+                    await new Promise(r => setTimeout(r, 1000));
+                }
+                
+                resolve();
+            });
+        }
+        return Promise.resolve();
+    }
+
+    function loadStage(stageNum) {
+        const stage = STAGES[stageNum];
+        if (!stage) return;
+
+        updateStageIndicator(stageNum);
+
+        if (stageNum === 0) {
+            fetch('/demo-logout/', { method: 'GET' });
+            if (demoModeContainer) {
+                demoModeContainer.classList.add('active');
+            }
+            if (mainContent) {
+                mainContent.classList.add('hidden');
+            }
+            if (navbar) {
+                navbar.style.display = 'none';
+            }
+            if (footer) {
+                footer.style.display = 'none';
+            }
+            hideFlashMessages();
+            hideCursor();
+            sessionStorage.removeItem('demoMode');
+            sessionStorage.removeItem('demoStage');
+        } else {
+            sessionStorage.setItem('demoMode', 'true');
+            sessionStorage.setItem('demoStage', stageNum);
+            hideFlashMessages();
+            window.location.href = stage.url;
+        }
+    }
+
+    function goToNextStage() {
+        const current = getCurrentStage();
+        if (current < TOTAL_STAGES - 1) {
+            executeStageTransition(current, current + 1).then(() => {
+                loadStage(current + 1);
+            });
+        }
+    }
+
+    function goToPreviousStage() {
+        const current = getCurrentStage();
+        if (current > 0) {
+            hideCursor();
+            loadStage(current - 1);
+        }
+    }
+
+    function exitDemo() {
+        sessionStorage.removeItem('demoMode');
+        sessionStorage.removeItem('demoStage');
+        if (demoModeContainer) {
+            demoModeContainer.classList.remove('active');
+        }
+        if (mainContent) {
+            mainContent.classList.remove('hidden');
+        }
+        if (demoTrigger) {
+            demoTrigger.classList.remove('hidden');
+        }
+        if (navbar) {
+            navbar.style.display = '';
+        }
+        if (footer) {
+            footer.style.display = '';
+        }
+        if (stageIndicator) {
+            stageIndicator.classList.remove('active');
+        }
+        hideCursor();
+        showFlashMessages();
+    }
+
+    if (demoTrigger) {
+        demoTrigger.addEventListener('click', function() {
+            demoTrigger.classList.add('hidden');
+            if (stageIndicator) {
+                stageIndicator.classList.add('active');
+            }
+            loadStage(0);
+        });
+    }
+
+    if (sessionStorage.getItem('demoMode') === 'true') {
+        const stage = getCurrentStage();
+        if (demoTrigger) {
+            demoTrigger.classList.add('hidden');
+        }
+        if (stageIndicator) {
+            stageIndicator.classList.add('active');
+        }
+        updateStageIndicator(stage);
+        hideFlashMessages();
+        
+        if (navbar) {
+            navbar.style.display = '';
+        }
+        if (footer) {
+            footer.style.display = '';
+        }
+
+        const savedCursorX = sessionStorage.getItem('demoCursorX');
+        const savedCursorY = sessionStorage.getItem('demoCursorY');
+        if (savedCursorX && savedCursorY) {
+            showCursorAt(parseFloat(savedCursorX), parseFloat(savedCursorY));
+        }
+    }
+
+    window.addEventListener('keydown', function(e) {
+        const isInDemo = sessionStorage.getItem('demoMode') === 'true';
+        const isOnTitlePage = (demoModeContainer && sessionStorage.getItem('demoMode') !== 'true' && demoModeContainer.classList.contains('active'));
+
+        if (isInDemo || isOnTitlePage) {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                if (isOnTitlePage) {
+                    exitDemo();
+                } else {
+                    exitDemo();
+                    window.location.href = '/';
+                }
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                goToNextStage();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                goToPreviousStage();
+            }
+        }
+    }, true);
+});
